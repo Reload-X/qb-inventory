@@ -1828,12 +1828,18 @@ box-shadow: 0px 0px 31px 0px rgba(85, 233, 171,0.9); */
     width: 8px;
     height: 8px;
     border-radius: 10%;
-    background-color: rgb(85, 233, 171);
-    -webkit-box-shadow:0px 0px 31px 0px rgba(85, 233, 171,0.9);
-    -moz-box-shadow: 0px 0px 31px 0px rgba(85, 233, 171,0.9);
-    box-shadow: 0px 0px 31px 0px rgba(85, 233, 171,0.9);
+    background: #17aa8a;
+    animation: glow 1.0s infinite alternate;
     bottom: 300;
     left: 70;
+}
+@keyframes glow {
+    from {
+        box-shadow: 0 0 15px -4px #17aa8a;
+    }
+    to {
+        box-shadow: 0 0 15px 3px #17aa8a;
+    }
 }
 .persona-information-baen {
     overflow: hidden;
