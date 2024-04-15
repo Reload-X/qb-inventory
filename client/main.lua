@@ -487,7 +487,7 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
                         Name = PlayerData.charinfo.firstname .." ".. PlayerData.charinfo.lastname .." - [".. GetPlayerServerId(PlayerId()) .."]", 
     
                         pName = PlayerData.charinfo.firstname .." ".. PlayerData.charinfo.lastname,
-                        pNumber = PlayerData.charinfo.phone,
+                        pNumber = "(" .. string.sub(PlayerData.charinfo.phone, 1, 3) .. ") " .. string.sub(PlayerData.charinfo.phone, 4, 6) .. "-" .. string.sub(PlayerData.charinfo.phone, 7),
                         pCID = PlayerData.citizenid,
                         pID = GetPlayerServerId(PlayerId()),
     
@@ -524,7 +524,7 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
                     Name = PlayerData.charinfo.firstname .." ".. PlayerData.charinfo.lastname .." - [".. GetPlayerServerId(PlayerId()) .."]", 
     
                     pName = PlayerData.charinfo.firstname .." ".. PlayerData.charinfo.lastname,
-                    pNumber = PlayerData.charinfo.phone,
+                    pNumber = "(" .. string.sub(PlayerData.charinfo.phone, 1, 3) .. ") " .. string.sub(PlayerData.charinfo.phone, 4, 6) .. "-" .. string.sub(PlayerData.charinfo.phone, 7),
                     pCID = PlayerData.citizenid,
                     pID = GetPlayerServerId(PlayerId()),
     
@@ -1178,3 +1178,59 @@ end)
         crafting.items = GetAttachmentThresholdItems()
         TriggerServerEvent("inventory:server:OpenInventory", "attachment_crafting", math.random(1, 99), crafting)
     end)
+    
+
+--     CreateThread(function()
+--         if Config.TargetSystem == "qb-target" then
+--         exports['qb-target']:AddTargetModel(Config.toolBoxModels, {
+--             options = {
+--                 {
+--                     event = "inventory:client:WeaponAttachmentCrafting",
+--                     icon = "fas fa-wrench",
+--                     label = "Weapon Attachment Crafting", 
+--                 },
+--                 {
+--                     event = "inventory:client:Crafting",
+--                     icon = "fas fa-wrench",
+--                     label = "Item Crafting", 
+--                 },
+--             },
+--         distance = 1.0
+--     })
+--     elseif Config.TargetSystem == "interact" then
+--         local toolBoxModels = {
+--             `prop_toolchest_05`,
+--             `prop_tool_bench02_ld`,
+--             `prop_tool_bench02`,
+--             `prop_toolchest_02`,
+--             `prop_toolchest_03`,
+--             `prop_toolchest_03_l2`,
+--             `prop_toolchest_05`,
+--             `prop_toolchest_04`,
+--         }
+--         for i = 1, #vendingobjects do
+--         exports.interact:AddModelInteraction({
+--             model = toolBoxModels[i],
+--             offset = vec3(0.0, 0.0, 0.0), -- optional
+--             -- bone = 'engine', -- optional
+--             -- name = 'interactionName', -- optional
+--             id = 'crafting_', -- needed for removing interactions
+--             distance = 4.0, -- optional
+--             interactDst = 1.5, -- optional
+--             ignoreLos = true,
+--             options = {
+--                 {
+--                     event = "inventory:client:WeaponAttachmentCrafting",
+--                     icon = "fas fa-wrench",
+--                     label = "Weapon Attachment Crafting", 
+--                 },
+--                 {
+--                     event = "inventory:client:Crafting",
+--                     icon = "fas fa-wrench",
+--                     label = "Item Crafting", 
+--                 },
+--             },
+--         })
+--         end
+--     end
+-- end)
