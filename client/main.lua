@@ -336,7 +336,20 @@ local function CreateItemDrop(index)
     DropsNear[index].isDropShowing = true
     PlaceObjectOnGroundProperly(dropItem)
     FreezeEntityPosition(dropItem, true)
-	if Config.UseTarget then
+    if Config.TargetSystem == "qb-target" then
+        exports['qb-target']:AddTargetEntity(dropItem, {
+			options = {
+				{
+					icon = 'fa-solid fa-bag-shopping',
+					label = "Open Bag",
+					action = function()
+						TriggerServerEvent("inventory:server:OpenInventory", "drop", index)
+					end,
+				}
+			},
+			distance = 2.5,
+		})
+    elseif Config.TargetSystem == "interact" then
         exports.interact:AddLocalEntityInteraction({
             entity = dropItem,
             name = 'dropitem', -- optional
@@ -748,7 +761,7 @@ RegisterCommand('inventory', function()
             local ped = PlayerPedId()
             local curVeh = nil
             local VendingMachine = nil
-            if not Config.UseTarget then VendingMachine = GetClosestVending() end
+            -- if not Config.UseTarget then VendingMachine = GetClosestVending() end
 
             if IsPedInAnyVehicle(ped, false) then -- Is Player In Vehicle
                 local vehicle = GetVehiclePedIsIn(ped, false)
@@ -1105,19 +1118,20 @@ CreateThread(function()
 end)
 
 CreateThread(function()
-    if Config.UseTarget then
-        -- exports['qb-target']:AddTargetModel(Config.VendingObjects, {
-        --     options = {
-        --         {
-        --             icon = 'fa-solid fa-cash-register',
-        --             label = 'Open Vending',
-        --             action = function()
-        --                 OpenVending()
-        --             end
-        --         },
-        --     },
-        --     distance = 2.5
-        -- })
+    if Config.TargetSystem == "qb-target" then
+        exports['qb-target']:AddTargetModel(Config.VendingObjects, {
+            options = {
+                {
+                    icon = 'fa-solid fa-cash-register',
+                    label = 'Open Vending',
+                    action = function()
+                        OpenVending()
+                    end
+                },
+            },
+            distance = 2.5
+        })
+    elseif Config.TargetSystem == "interact" then
             local vendingobjects = { -- The mighty list of dumpters/trash cans
             `prop_vend_soda_01`,
             `prop_vend_soda_02`,
@@ -1165,29 +1179,58 @@ end)
         TriggerServerEvent("inventory:server:OpenInventory", "attachment_crafting", math.random(1, 99), crafting)
     end)
     
-    -- local toolBoxModels = {
-    --     `prop_toolchest_05`,
-    --     `prop_tool_bench02_ld`,
-    --     `prop_tool_bench02`,
-    --     `prop_toolchest_02`,
-    --     `prop_toolchest_03`,
-    --     `prop_toolchest_03_l2`,
-    --     `prop_toolchest_05`,
-    --     `prop_toolchest_04`,
-    -- }
-    -- exports['qb-target']:AddTargetModel(toolBoxModels, {
-    --         options = {
-    --             {
-    --                 event = "inventory:client:WeaponAttachmentCrafting",
-    --                 icon = "fas fa-wrench",
-    --                 label = "Weapon Attachment Crafting", 
-    --             },
-    --             {
-    --                 event = "inventory:client:Crafting",
-    --                 icon = "fas fa-wrench",
-    --                 label = "Item Crafting", 
-    --             },
-    --         },
-    --     distance = 1.0
-    -- })
 
+--     CreateThread(function()
+--         if Config.TargetSystem == "qb-target" then
+--         exports['qb-target']:AddTargetModel(Config.toolBoxModels, {
+--             options = {
+--                 {
+--                     event = "inventory:client:WeaponAttachmentCrafting",
+--                     icon = "fas fa-wrench",
+--                     label = "Weapon Attachment Crafting", 
+--                 },
+--                 {
+--                     event = "inventory:client:Crafting",
+--                     icon = "fas fa-wrench",
+--                     label = "Item Crafting", 
+--                 },
+--             },
+--         distance = 1.0
+--     })
+--     elseif Config.TargetSystem == "interact" then
+--         local toolBoxModels = {
+--             `prop_toolchest_05`,
+--             `prop_tool_bench02_ld`,
+--             `prop_tool_bench02`,
+--             `prop_toolchest_02`,
+--             `prop_toolchest_03`,
+--             `prop_toolchest_03_l2`,
+--             `prop_toolchest_05`,
+--             `prop_toolchest_04`,
+--         }
+--         for i = 1, #vendingobjects do
+--         exports.interact:AddModelInteraction({
+--             model = toolBoxModels[i],
+--             offset = vec3(0.0, 0.0, 0.0), -- optional
+--             -- bone = 'engine', -- optional
+--             -- name = 'interactionName', -- optional
+--             id = 'crafting_', -- needed for removing interactions
+--             distance = 4.0, -- optional
+--             interactDst = 1.5, -- optional
+--             ignoreLos = true,
+--             options = {
+--                 {
+--                     event = "inventory:client:WeaponAttachmentCrafting",
+--                     icon = "fas fa-wrench",
+--                     label = "Weapon Attachment Crafting", 
+--                 },
+--                 {
+--                     event = "inventory:client:Crafting",
+--                     icon = "fas fa-wrench",
+--                     label = "Item Crafting", 
+--                 },
+--             },
+--         })
+--         end
+--     end
+-- end)
