@@ -17,6 +17,12 @@ Config.Progressbar = {
     maxT = 500              -- Max Time for Inventory to open
 }
 
+Config.VendingObjects = {
+    "prop_vend_soda_01",
+    "prop_vend_soda_02",
+    "prop_vend_water_01"
+}
+
 Config.CraftingObject = `prop_toolchest_05` -- Only needed if not using target | Line 928 to change Target Models
 
 Config.VendingItem = {
