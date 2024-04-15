@@ -1345,11 +1345,11 @@ RegisterNetEvent('inventory:server:CraftAttachment', function(itemName, itemCost
 	if not itemName or not itemCosts then return end
 
 	for k, v in pairs(itemCosts) do
-		RemoveItem(src, k, (v*amount))
+		RemoveItem(src, k, (v * amount))
 	end
 	AddItem(src, itemName, amount, toSlot)
-	Player.Functions.SetMetaData("attachmentcraftingrep", Player.PlayerData.metadata["attachmentcraftingrep"] + (points * amount))
-	TriggerClientEvent("inventory:client:UpdatePlayerInventory", src, false)
+	Player.Functions.SetMetaData('attachmentcraftingrep', Player.PlayerData.metadata['attachmentcraftingrep'] + (points * amount))
+	TriggerClientEvent('inventory:client:UpdatePlayerInventory', src, false)
 end)
 
 RegisterNetEvent('inventory:server:SetIsOpenState', function(IsOpen, type, id)
@@ -2720,4 +2720,3 @@ end)
 RegisterNetEvent('inventory:server:addGloveboxItems', function()
 	print('inventory:server:addGloveboxItems has been deprecated please use exports[\'qb-inventory\']:addGloveboxItems(plate, items)')
 end)
-
