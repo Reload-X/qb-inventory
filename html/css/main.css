@@ -1827,7 +1827,7 @@ box-shadow: 0px 0px 31px 0px rgba(85, 233, 171,0.9); */
     position: absolute;
     width: 8px;
     height: 8px;
-    border-radius: 10%;
+    border-radius: 50%;
     background: #17aa8a;
     animation: glow 1.0s infinite alternate;
     bottom: 300;
