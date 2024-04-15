@@ -22,19 +22,6 @@ Config.VendingObjects = {
     "prop_vend_water_01"
 }
 
-Config.toolBoxModels = {
-        `prop_toolchest_05`,
-        `prop_tool_bench02_ld`,
-        `prop_tool_bench02`,
-        `prop_toolchest_02`,
-        `prop_toolchest_03`,
-        `prop_toolchest_03_l2`,
-        `prop_toolchest_05`,
-        `prop_toolchest_04`,
-}
-
-Config.CraftingObject = `prop_toolchest_05` -- Only needed if not using target | Line 928 to change Target Models
-
 Config.VendingItem = {
     [1] = {
         name = "kurkakola",
