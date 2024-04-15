@@ -77,20 +77,20 @@ exports("HasItem", HasItem)
 
 -- Functions
 
-local function GetClosestVending()
-    local ped = PlayerPedId()
-    local pos = GetEntityCoords(ped)
-    local object = nil
-    for _, machine in pairs(Config.VendingObjects) do
-        local ClosestObject = GetClosestObjectOfType(pos.x, pos.y, pos.z, 0.75, GetHashKey(machine), 0, 0, 0)
-        if ClosestObject ~= 0 then
-            if object == nil then
-                object = ClosestObject
-            end
-        end
-    end
-    return object
-end
+-- local function GetClosestVending()
+--     local ped = PlayerPedId()
+--     local pos = GetEntityCoords(ped)
+--     local object = nil
+--     for _, machine in pairs(Config.VendingObjects) do
+--         local ClosestObject = GetClosestObjectOfType(pos.x, pos.y, pos.z, 0.75, GetHashKey(machine), 0, 0, 0)
+--         if ClosestObject ~= 0 then
+--             if object == nil then
+--                 object = ClosestObject
+--             end
+--         end
+--     end
+--     return object
+-- end
 
 local function OpenVending()
     local ShopItems = {}
