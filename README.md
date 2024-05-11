@@ -16,3 +16,9 @@ I removed the item images for my own sanity while uploading the changes. So plea
 # Thanks to the Project Sloth Community. Without the support on the first version this release wouldn't be possible.
 
 
+# Dependencies 
+# BC Wounding 
+# https://brocode.tebex.io/package/6121826 (FREE)
+
+# 0r Apartment is needed if you want the personal information apartment to work!
+
