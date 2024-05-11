@@ -1,5 +1,5 @@
-# ps-inventory
-Project-Sloth's FiveM Inventory System Redesigned to Look Like and Feel like NoPixel 4.0
+# qb-inventory
+FiveM Inventory System Redesigned to Look Like and Feel like NoPixel 4.0
 
 I removed the item images for my own sanity while uploading the changes. So please use your own item images
 
