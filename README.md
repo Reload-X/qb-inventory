@@ -5,6 +5,8 @@ I removed the item images for my own sanity while uploading the changes. So plea
 
 # Preview
 ![image2](https://github.com/Reload-X/qb-inventory/assets/167034229/00122ffc-1f34-4d49-9c81-ddf07dc31449)
+![image](https://github.com/Reload-X/qb-inventory/assets/167034229/d22ea538-de70-4651-bb8a-eae963062032)
+
 
 
 # Credit where Credit is Due
