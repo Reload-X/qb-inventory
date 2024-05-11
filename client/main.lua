@@ -593,12 +593,15 @@ end)
 RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventory, other)
     TriggerEvent('qb-inventory:UpdatePlayerDamage')
     if not IsEntityDead(PlayerPedId()) then
+        if Config.OrApartment == true then
         local rooms = exports["0r-apartment"]:GetPlayerOwnedRooms()
         local room = nil
         if next(rooms) then
             room = rooms[#rooms]
             room.apartment_label = exports["0r-apartment"]:GetApartmentLabelById(room.apartment_id)
         end
+    elseif Config.OrApartment == false then
+    end
         if Config.Progressbar.Enable then
             QBCore.Functions.Progressbar('open_inventory', 'Opening Inventory...', math.random(Config.Progressbar.minT, Config.Progressbar.maxT), false, true, { -- Name | Label | Time | useWhileDead | canCancel
                 disableMovement = false,
