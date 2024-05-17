@@ -590,17 +590,16 @@ RegisterNetEvent('inventory:server:RobPlayer', function(TargetId)
     })
 end)
 
+if Config.OrApartment == true then
+
 RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventory, other)
     TriggerEvent('qb-inventory:UpdatePlayerDamage')
     if not IsEntityDead(PlayerPedId()) then
-        if Config.OrApartment == true then
         local rooms = exports["0r-apartment"]:GetPlayerOwnedRooms()
         local room = nil
         if next(rooms) then
             room = rooms[#rooms]
             room.apartment_label = exports["0r-apartment"]:GetApartmentLabelById(room.apartment_id)
-        end
-    elseif Config.OrApartment == false then
     end
         if Config.Progressbar.Enable then
             QBCore.Functions.Progressbar('open_inventory', 'Opening Inventory...', math.random(Config.Progressbar.minT, Config.Progressbar.maxT), false, true, { -- Name | Label | Time | useWhileDead | canCancel
@@ -684,6 +683,101 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
         end
     end
 end)
+
+if Config.OrApartment == false then
+RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventory, other)
+    TriggerEvent('qb-inventory:UpdatePlayerDamage')
+    if not IsEntityDead(PlayerPedId()) then
+        local rooms = exports["0r-apartment"]:GetPlayerOwnedRooms()
+        local room = nil
+        if next(rooms) then
+            room = rooms[#rooms]
+            room.apartment_label = exports["0r-apartment"]:GetApartmentLabelById(room.apartment_id)
+    end
+        if Config.Progressbar.Enable then
+            QBCore.Functions.Progressbar('open_inventory', 'Opening Inventory...', math.random(Config.Progressbar.minT, Config.Progressbar.maxT), false, true, { -- Name | Label | Time | useWhileDead | canCancel
+                disableMovement = false,
+                disableCarMovement = false,
+                disableMouse = false,
+                disableCombat = false,
+            }, {}, {}, {}, function() -- Play When Done
+                ToggleHotbar(false)
+                SetNuiFocus(true, true)
+                if other then
+                    currentOtherInventory = other.name
+                end
+                QBCore.Functions.TriggerCallback('inventory:server:ConvertQuality', function(data)
+                    inventory = data.inventory
+                    other = data.other
+                    SendNUIMessage({
+                        action = "open",
+                        inventory = inventory,
+                        slots = Config.MaxInventorySlots,
+                        other = other,
+                        maxweight = Config.MaxInventoryWeight,
+                        Ammo = PlayerAmmo,
+                        maxammo = Config.MaximumAmmoValues,
+                        Name = PlayerData.charinfo.firstname .." ".. PlayerData.charinfo.lastname, 
+    
+                        pName = PlayerData.charinfo.firstname .." ".. PlayerData.charinfo.lastname,
+                        pNumber = "" .. string.sub(PlayerData.charinfo.phone, 1, 3) .. "-" .. string.sub(PlayerData.charinfo.phone, 4, 6) .. "-" .. string.sub(PlayerData.charinfo.phone, 7),
+                        pCID = PlayerData.citizenid,
+                        apartment = apartment,
+                        pID = GetPlayerServerId(PlayerId()),
+                        pHeadDamage = bodypercent['HEAD'].percent,
+                        pBodyDamage = bodypercent['UPPER_BODY'].percent,
+                        pRArmDamage = bodypercent['RARM'].percent,
+                        pLArmDamage = bodypercent['LARM'].percent,
+                        pRLegDamage = bodypercent['RLEG'].percent,
+                        pLLegDamage = bodypercent['LLEG'].percent,
+    
+    
+    
+                    })
+                inInventory = true
+                end, inventory, other)
+            end)
+        else
+            Wait(Config.Waittime)
+            ToggleHotbar(false)
+            SetNuiFocus(true, true)
+            if other then
+                currentOtherInventory = other.name
+            end
+            QBCore.Functions.TriggerCallback('inventory:server:ConvertQuality', function(data)
+                inventory = data.inventory
+                other = data.other
+                SendNUIMessage({
+                    action = "open",
+                    inventory = inventory,
+                    slots = Config.MaxInventorySlots,
+                    other = other,
+                    maxweight = Config.MaxInventoryWeight,
+                    Ammo = PlayerAmmo,
+                    maxammo = Config.MaximumAmmoValues,
+                    Name = PlayerData.charinfo.firstname .." ".. PlayerData.charinfo.lastname, 
+    
+                    pName = PlayerData.charinfo.firstname .." ".. PlayerData.charinfo.lastname,
+                    pNumber = "" .. string.sub(PlayerData.charinfo.phone, 1, 3) .. "-" .. string.sub(PlayerData.charinfo.phone, 4, 6) .. "-" .. string.sub(PlayerData.charinfo.phone, 7),
+                    pCID = PlayerData.citizenid,
+                    pID = GetPlayerServerId(PlayerId()),
+                    apartment = room,
+                    pHeadDamage = bodypercent['HEAD'].percent,
+                    pBodyDamage = bodypercent['UPPER_BODY'].percent,
+                    pRArmDamage = bodypercent['RARM'].percent,
+                    pLArmDamage = bodypercent['LARM'].percent,
+                    pRLegDamage = bodypercent['RLEG'].percent,
+                    pLLegDamage = bodypercent['LLEG'].percent,
+    
+    
+                })
+            inInventory = true
+            end,inventory,other)
+        end
+    end
+end)
+end
+		
 
 RegisterNetEvent('inventory:client:UpdateOtherInventory', function(items, isError)
     SendNUIMessage({
