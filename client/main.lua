@@ -684,7 +684,7 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
     end
 end)
 
-if Config.OrApartment == false then
+elseif Config.OrApartment == false then
     RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventory, other)
         TriggerEvent('qb-inventory:UpdatePlayerDamage')
         if not IsEntityDead(PlayerPedId()) then
