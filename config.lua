@@ -35,7 +35,7 @@ Config.CleanupDropTime = 15 * 60 -- How many seconds it takes for drops to be un
 Config.MaxDropViewDistance = 12.5 -- The distance in GTA Units that a drop can be seen
 Config.ItemDropObject = `sf_prop_sf_backpack_01a` -- if Config.UseItemDrop = true, this will be the prop that spawns for the item //  if its false it will be a marker
 Config.Waittime = 0 -- Time to open inventory 2000 = 2 seconds
-Config.OrApartment = true
+Config.OrApartment = false
 
 --Floor Drops/Vending
 Config.UseItemDrop = true -- This will enable item object to spawn on drops instead of markers // if its false it will be a marker
