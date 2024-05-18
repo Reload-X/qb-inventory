@@ -39,7 +39,7 @@ Config.OrApartment = false
 
 --Floor Drops/Vending
 Config.UseItemDrop = true -- This will enable item object to spawn on drops instead of markers // if its false it will be a marker
-Config.TargetSystem = 'interact' -- choose between qb-target/interact
+Config.TargetSystem = 'qb-target' -- choose between qb-target/interact
 
 Config.Progressbar = {
     Enable = false,         -- True to Enable the progressbar while opening inventory
