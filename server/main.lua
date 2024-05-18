@@ -147,13 +147,19 @@ exports("GetFirstSlotByItem", GetFirstSlotByItem)
 
 ---Add an item to the inventory of the player
 
-local function AddItem(source, item, amount, slot, info)
+local function AddItem(source, item, amount, slot, info, created)
 	local Player = QBCore.Functions.GetPlayer(source)
 
 	if not Player then return false end
 
 	local totalWeight = GetTotalWeight(Player.PlayerData.items)
 	local itemInfo = QBCore.Shared.Items[item:lower()]
+	local time = os.time()
+	if not created then
+		itemInfo['created'] = time
+	else
+		itemInfo['created'] = created
+	end
 	if not itemInfo and not Player.Offline then
 		QBInventoryNotify(source, Config.Lang["ItemDoesNotExist"], "error")
 		return false
@@ -162,6 +168,8 @@ local function AddItem(source, item, amount, slot, info)
 	amount = tonumber(amount) or 1
 	slot = tonumber(slot) or GetFirstSlotByItem(Player.PlayerData.items, item)
 	info = info or {}
+	itemInfo['created'] = created or time
+	info.quality = info.quality or 100
 
 	if itemInfo['type'] == 'weapon' then
 		info.serie = info.serie or tostring(QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(1) .. QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(3) .. QBCore.Shared.RandomStr(4))
@@ -178,7 +186,7 @@ local function AddItem(source, item, amount, slot, info)
 
 			return true
 		elseif not itemInfo['unique'] and slot or slot and Player.PlayerData.items[slot] == nil then
-			Player.PlayerData.items[slot] = { name = itemInfo['name'], amount = amount, info = info or '', label = itemInfo['label'], description = itemInfo['description'] or '', weight = itemInfo['weight'], type = itemInfo['type'], unique = itemInfo['unique'], useable = itemInfo['useable'], image = itemInfo['image'], shouldClose = itemInfo['shouldClose'], slot = slot, combinable = itemInfo['combinable'] }
+			Player.PlayerData.items[slot] = { name = itemInfo['name'], amount = amount, info = info or '', label = itemInfo['label'], description = itemInfo['description'] or '', weight = itemInfo['weight'], type = itemInfo['type'], unique = itemInfo['unique'], useable = itemInfo['useable'], image = itemInfo['image'], shouldClose = itemInfo['shouldClose'], slot = slot, combinable = itemInfo['combinable'], created = itemInfo['created'] }
 			Player.Functions.SetPlayerData('items', Player.PlayerData.items)
 
 			if Player.Offline then return true end
@@ -189,7 +197,7 @@ local function AddItem(source, item, amount, slot, info)
 		elseif itemInfo['unique'] or (not slot or slot == nil) or itemInfo['type'] == 'weapon' then
 			for i = 1, Config.MaxInventorySlots, 1 do
 				if Player.PlayerData.items[i] == nil then
-					Player.PlayerData.items[i] = { name = itemInfo['name'], amount = amount, info = info or '', label = itemInfo['label'], description = itemInfo['description'] or '', weight = itemInfo['weight'], type = itemInfo['type'], unique = itemInfo['unique'], useable = itemInfo['useable'], image = itemInfo['image'], shouldClose = itemInfo['shouldClose'], slot = i, combinable = itemInfo['combinable'] }
+					Player.PlayerData.items[i] = { name = itemInfo['name'], amount = amount, info = info or '', label = itemInfo['label'], description = itemInfo['description'] or '', weight = itemInfo['weight'], type = itemInfo['type'], unique = itemInfo['unique'], useable = itemInfo['useable'], image = itemInfo['image'], shouldClose = itemInfo['shouldClose'], slot = i, combinable = itemInfo['combinable'], created = itemInfo['created'] }
 					Player.Functions.SetPlayerData('items', Player.PlayerData.items)
 
 					if Player.Offline then return true end
