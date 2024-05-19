@@ -591,7 +591,7 @@ RegisterNetEvent('inventory:server:RobPlayer', function(TargetId)
 end)
 
 RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventory, other)
-    -- TriggerEvent('qb-inventory:UpdatePlayerDamage')
+    TriggerEvent('qb-inventory:UpdatePlayerDamage')
     if not IsEntityDead(PlayerPedId()) then
         local rooms = nil
         local room = nil
