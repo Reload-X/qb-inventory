@@ -1008,13 +1008,13 @@ local function OpenInventory(name, id, other, origin)
 			end
 			secondInv.name = "stash-"..id
 			secondInv.label = "Stash-"..id
-			secondInv.maxweight = Config.StashMaxWeight
+			secondInv.maxweight = maxweight
 			secondInv.inventory = {}
-			secondInv.slots = Config.StashSlots
+			secondInv.slots = slots
 			if Stashes[id] and Stashes[id].isOpen then
 				secondInv.name = "none-inv"
 				secondInv.label = "Stash-None"
-				secondInv.maxweight = Config.StashMaxWeight
+				secondInv.maxweight = 1000000
 				secondInv.inventory = {}
 				secondInv.slots = 0
 			else
@@ -1300,24 +1300,24 @@ RegisterNetEvent('inventory:server:OpenInventory', function(name, id, other)
 						end
 					end
 				end
-				local maxweight = 1000000
-				local slots = 50
-				if other then
-					maxweight = other.maxweight or 1000000
-					slots = other.slots or 50
-				end
-				secondInv.name = "stash-"..id
-				secondInv.label = "Stash-"..id
-				secondInv.maxweight = Config.StashMaxWeight
+			local maxweight = 1000000
+			local slots = 50
+			if other then
+				maxweight = other.maxweight or 1000000
+				slots = other.slots or 50
+			end
+			secondInv.name = "stash-"..id
+			secondInv.label = "Stash-"..id
+			secondInv.maxweight = maxweight
+			secondInv.inventory = {}
+			secondInv.slots = slots
+			if Stashes[id] and Stashes[id].isOpen then
+				secondInv.name = "none-inv"
+				secondInv.label = "Stash-None"
+				secondInv.maxweight = 1000000
 				secondInv.inventory = {}
-				secondInv.slots = Config.StashSlots
-				if Stashes[id] and Stashes[id].isOpen then
-					secondInv.name = "none-inv"
-					secondInv.label = "Stash-None"
-					secondInv.maxweight = Config.StashMaxWeight
-					secondInv.inventory = {}
-					secondInv.slots = 0
-				else
+				secondInv.slots = 0
+			else
 					local stashItems = GetStashItems(id)
 					if next(stashItems) then
 						secondInv.inventory = stashItems
