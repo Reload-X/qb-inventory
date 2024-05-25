@@ -10,10 +10,6 @@ end
 Config.MaxInventoryWeight = 120000 -- Max weight a player can carry (default 120kg, written in grams)
 Config.MaxInventorySlots = 25 -- Max inventory slots for a player
 
---STASH
-Config.StashMaxWeight = 1000000
-Config.StashSlots = 50
-
 --GLOVEBOX
 Config.GloveboxMaxWeight = 15000
 Config.GloveboxMaxSlots = 15
