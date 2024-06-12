@@ -1,24 +1,51 @@
-# qb-inventory
-FiveM Inventory System Redesigned to Look Like and Feel like NoPixel 4.0
+```DO NOT CHANGE ANYTHING WITHOUT READING THE README FILE. THE SCRIPT WILL NOT WORK. READ THE README FILE AFTER EACH UPDATE.```
+```DO NOT CHANGE ANYTHING WITHOUT READING THE README FILE. THE SCRIPT WILL NOT WORK. READ THE README FILE AFTER EACH UPDATE.```
+```DO NOT CHANGE ANYTHING WITHOUT READING THE README FILE. THE SCRIPT WILL NOT WORK. READ THE README FILE AFTER EACH UPDATE.```
+```DO NOT CHANGE ANYTHING WITHOUT READING THE README FILE. THE SCRIPT WILL NOT WORK. READ THE README FILE AFTER EACH UPDATE.```
+```DO NOT CHANGE ANYTHING WITHOUT READING THE README FILE. THE SCRIPT WILL NOT WORK. READ THE README FILE AFTER EACH UPDATE.```
+```DO NOT CHANGE ANYTHING WITHOUT READING THE README FILE. THE SCRIPT WILL NOT WORK. READ THE README FILE AFTER EACH UPDATE.```
+```DO NOT CHANGE ANYTHING WITHOUT READING THE README FILE. THE SCRIPT WILL NOT WORK. READ THE README FILE AFTER EACH UPDATE.```
+```DO NOT CHANGE ANYTHING WITHOUT READING THE README FILE. THE SCRIPT WILL NOT WORK. READ THE README FILE AFTER EACH UPDATE.```
+```DO NOT CHANGE ANYTHING WITHOUT READING THE README FILE. THE SCRIPT WILL NOT WORK. READ THE README FILE AFTER EACH UPDATE.```
+```DO NOT CHANGE ANYTHING WITHOUT READING THE README FILE. THE SCRIPT WILL NOT WORK. READ THE README FILE AFTER EACH UPDATE.```
+```DO NOT CHANGE ANYTHING WITHOUT READING THE README FILE. THE SCRIPT WILL NOT WORK. READ THE README FILE AFTER EACH UPDATE.```
 
-I removed the item images for my own sanity while uploading the changes. So please use your own item images
+📦 QB Inventory
+This script is coded to run smoothly when your inventories change without any problems.
 
-# Preview
-![image2](https://github.com/Reload-X/qb-inventory/assets/167034229/00122ffc-1f34-4d49-9c81-ddf07dc31449)
-![image](https://github.com/Reload-X/qb-inventory/assets/167034229/d22ea538-de70-4651-bb8a-eae963062032)
+🛠️ Installation
+1. >Update Config File:
+If you are using qb-core, you need to change e.g-inventory export names to qb-inventory. Otherwise it will not work properly
+
+Update the exports below in the corresponding files and any other script you may have which use qb-inventory export
+
+qb-core > client > functions.lua
+qb-core > server > functions.lua
+qb-core > server > player.lua
+
+2. >Installing Requirements:
+You need to interact or qb-target or ox_target script for the targeting system
+
+🚀 Updates
+The script will be continuously updated and new features will continue to be added.
+
+❗️ Important Notes
+1. It is recommended not to restart the script while the server is active.
+
+2. It is recommended to check the config file several times before running it. If you need help with the config, please make sure to ask in a respectful way.
+
+3. If you are already using qb-inventory, you do not need to make any changes to your code to organize your inventory
 
 
+# Interact 
+# https://github.com/darktrovx/interact
 
-# Credit where Credit is Due
+# qb-target 
+# https://github.com/qbcore-framework/qb-target
 
-# Thanks to loljoshie for originally creating the lj-inventory we've all come to love.
-# Thanks to ok1ez and the project sloth dev team for continuing lj-inventory's existence with keeping it up to date and maintaining it as ps-inventory.
-# Thanks to the Project Sloth Community. Without the support on the first version this release wouldn't be possible.
+# 0r Apartment is optional feature and is only needed if you want the personal information apartment to work! or just put false in the config
+# You can find it here https://0resmon.tebex.io/package/6215767
 
-
-# Dependencies 
-# BC Wounding 
+# BC_Wounding is needed for the player stats y0u can find it here 
 # https://brocode.tebex.io/package/6121826 (FREE)
-
-# 0r Apartment is needed if you want the personal information apartment to work!
 
