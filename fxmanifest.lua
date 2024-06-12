@@ -1,18 +1,22 @@
 fx_version 'cerulean'
 game 'gta5'
 
-description 'ps-inventory'
+description 'qb-inventory'
 version '1.0.2'
 
 shared_scripts {
-	'config.lua',
+	'shared/config.lua',
+	'shared/vehicles.lua',
+	'shared/filter.lua',
+	'shared/bin.lua',
+	'shared/vending.lua',
+	'shared/lang.lua',
 	'@qb-weapons/config.lua'
 }
 
 server_scripts {
 	'@oxmysql/lib/MySQL.lua',
 	'server/main.lua',
-	-- 'server/visual.lua',
 }
 
 client_scripts {
