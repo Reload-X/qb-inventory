@@ -227,6 +227,18 @@ local function IsBackEngine(vehModel)
     return BackEngineVehicles[vehModel]
 end
 
+RegisterCommand('robme', function()
+    local ped = PlayerPedId()
+    QBCore.Functions.Progressbar("robbingme", "Touching myself...", 1000, false, true, {
+        disableMovement = true,
+        disableCarMovement = true,
+        disableMouse = false,
+        disableCombat = true,
+    }, {}, {}, {}, function() -- Done
+        TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", GetPlayerServerId(PlayerId()))
+    end)
+end, false)
+
 
 local function OpenTrunk()
     local vehicle = QBCore.Functions.GetClosestVehicle()
@@ -421,7 +433,7 @@ local function CreateItemDrop(index)
     DropsNear[index].isDropShowing = true
     PlaceObjectOnGroundProperly(dropItem)
     FreezeEntityPosition(dropItem, true)
-    if Config.TargetSystem == "qb-target" then
+    if Config.TargetSystem == "qb_target" then
         exports['qb-target']:AddTargetEntity(dropItem, {
 			options = {
 				{
@@ -432,8 +444,29 @@ local function CreateItemDrop(index)
 					end,
 				}
 			},
-			distance = 2.5,
 		})
+    elseif Config.TargetSystem == "customtarget" then
+        exports[Config.CustomTarget]:AddTargetEntity(dropItem, {
+            options = {
+                {
+                    icon = 'fa-solid fa-bag-shopping',
+                    label = "Open Bag",
+                    action = function()
+                        TriggerServerEvent("inventory:server:OpenInventory", "drop", index)
+                    end,
+                }
+            },
+        })
+    elseif Config.TargetSystem == "ox_target" then
+        exports.ox_target:addLocalEntity(dropItem, {
+                {
+                    icon = 'fa-solid fa-bag-shopping',
+                    label = "Open Bag",
+                    onSelect = function()
+                        TriggerServerEvent("inventory:server:OpenInventory", "drop", index)
+                    end,
+                }
+        })
     elseif Config.TargetSystem == "interact" then
         exports.interact:AddLocalEntityInteraction({
             entity = dropItem,
@@ -457,8 +490,10 @@ end
 
 --VENDING
 
+if Config.VendingMachine == true then
+
 CreateThread(function()
-    if Config.TargetSystem == "qb-target" then
+    if Config.TargetSystem == "qb_target" then
         exports['qb-target']:AddTargetModel(Config.VendingObjects, {
             options = {
                 {
@@ -470,6 +505,29 @@ CreateThread(function()
                 },
             },
             distance = 2.5
+        })
+    elseif Config.TargetSystem == "customtarget" then
+        exports[Config.CustomTarget]:AddTargetModel(Config.VendingObjects, {
+            options = {
+                {
+                    icon = 'fa-solid fa-cash-register',
+                    label = 'Open Vending',
+                    action = function()
+                        OpenVending()
+                    end
+                },
+            },
+            distance = 2.5
+        })
+    elseif Config.TargetSystem == "ox_target" then
+        exports.ox_target:addModel(Config.VendingObjects, {
+            {
+                icon = 'fa-solid fa-cash-register',
+                label = 'Open Vending',
+                onSelect = function()
+                    OpenVending()
+                end
+            },
         })
     elseif Config.TargetSystem == "interact" then
             local vendingobjects = { -- The mighty list of vending machines
@@ -501,6 +559,7 @@ CreateThread(function()
         end
     end
 end)
+end
 
 --BIN
 
@@ -602,6 +661,15 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
                 room.apartment_label = exports["0r-apartment"]:GetApartmentLabelById(room.apartment_id)
             end
         end
+
+        filterWeapon = {}
+
+        for k, v in pairs(QBCore.Shared.Items) do
+            if v.type == "weapon" then
+                table.insert(filterWeapon, v.label)
+            end
+        end
+
         if Config.Progressbar.Enable then
             QBCore.Functions.Progressbar('open_inventory', 'Opening Inventory...', math.random(Config.Progressbar.minT, Config.Progressbar.maxT), false, true, { -- Name | Label | Time | useWhileDead | canCancel
                 disableMovement = false,
@@ -630,7 +698,9 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
                         pName = PlayerData.charinfo.firstname .." ".. PlayerData.charinfo.lastname,
                         pNumber = "" .. string.sub(PlayerData.charinfo.phone, 1, 3) .. "-" .. string.sub(PlayerData.charinfo.phone, 4, 6) .. "-" .. string.sub(PlayerData.charinfo.phone, 7),
                         pCID = PlayerData.citizenid,
-                        apartment = apartment,
+                        apartment = room,
+                        weapons = filterWeapon,
+                        filter = Config.Filter,
                         pID = GetPlayerServerId(PlayerId()),
                         pHeadDamage = bodypercent['HEAD'].percent,
                         pBodyDamage = bodypercent['UPPER_BODY'].percent,
@@ -646,7 +716,7 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
                 end, inventory, other)
             end)
         else
-            -- Wait(Config.Waittime)
+            Wait(Config.Waittime)
             ToggleHotbar(false)
             SetNuiFocus(true, true)
             if other then
@@ -670,6 +740,8 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
                     pCID = PlayerData.citizenid,
                     pID = GetPlayerServerId(PlayerId()),
                     apartment = room,
+                    weapons = filterWeapon,
+                    filter = Config.Filter,
                     pHeadDamage = bodypercent['HEAD'].percent,
                     pBodyDamage = bodypercent['UPPER_BODY'].percent,
                     pRArmDamage = bodypercent['RARM'].percent,
@@ -894,15 +966,15 @@ RegisterCommand('inventory', function()
                 local maxweight
                 local slots
 
-                if Config.VehicleInventories.vehicles[vehicleModel] then
-                    maxweight = Config.VehicleInventories.vehicles[vehicleModel].maxWeight
-                    slots = Config.VehicleInventories.vehicles[vehicleModel].slots
-                elseif Config.VehicleInventories.classes[vehicleClass] then
-                    maxweight = Config.VehicleInventories.classes[vehicleClass].maxWeight
-                    slots = Config.VehicleInventories.classes[vehicleClass].slots
+                if Config.TrunkInventory.vehicles[vehicleModel] then
+                    maxweight = Config.TrunkInventory.vehicles[vehicleModel].maxWeight
+                    slots = Config.TrunkInventory.vehicles[vehicleModel].slots
+                elseif Config.TrunkInventory.classes[vehicleClass] then
+                    maxweight = Config.TrunkInventory.classes[vehicleClass].maxWeight
+                    slots = Config.TrunkInventory.classes[vehicleClass].slots
                 else
-                    maxweight = Config.VehicleInventories.default.maxWeight
-                    slots = Config.VehicleInventories.default.slots
+                    maxweight = Config.TrunkInventory.default.maxWeight
+                    slots = Config.TrunkInventory.default.slots
                 end
 
                 local other = {
@@ -1161,7 +1233,7 @@ end)
         local searched = {3423423}
         local canSearch = true
         
-        RegisterNetEvent('qb-inventory:client:searchtrash', function()
+        RegisterNetEvent('inventory:client:searchtrash', function()
             if canSearch then
                 local ped = GetPlayerPed(-1)
                 local pos = GetEntityCoords(ped)
@@ -1182,8 +1254,8 @@ end)
                             elseif i == #searched and not dumpsterFound then
                                 
                                 local itemType = math.random(#Config.RewardTypes)
-                                TriggerEvent('qb-inventory:client:progressbar', itemType)
-                                TriggerServerEvent('qb-inventory:server:startDumpsterTimer', dumpster)
+                                TriggerEvent('inventory:client:progressbar', itemType)
+                                TriggerServerEvent('inventory:server:startDumpsterTimer', dumpster)
                                 table.insert(searched, dumpster)
                             end
                         end
@@ -1192,7 +1264,7 @@ end)
             end
         end)
         
-        RegisterNetEvent('qb-inventory:server:removeDumpster', function(object)
+        RegisterNetEvent('inventory:server:removeDumpster', function(object)
             for i = 1, #searched do
                 if searched[i] == object then
                     table.remove(searched, i)
@@ -1200,9 +1272,9 @@ end)
             end
         end)
         
-        RegisterNetEvent('qb-inventory:client:progressbar', function(itemType)
+        RegisterNetEvent('inventory:client:progressbar', function(itemType)
             local item = math.random(#Config.RewardsSmall)
-            QBCore.Functions.Progressbar("trash_find", "Searching trash..", Config.SearchBinProgress, false, true, {
+            QBCore.Functions.Progressbar("trash_find", "Searching trConfig..", Config.SearchBinProgress, false, true, {
                 disableMovement = false,
                 disableCarMovement = false,
                 disableMouse = false,
@@ -1215,11 +1287,11 @@ end)
                 StopAnimTask(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "idle_d", 1.0)
                 if Config.RewardTypes[itemType].type == "item" then
                     QBInventoryNotify(Config.Lang["FoundSomething"], "success")
-                    TriggerServerEvent('qb-inventory:server:recieveItem', Config.RewardsSmall[item].item, math.random(Config.RewardsSmall[item].minAmount, Config.RewardsSmall[item].maxAmount))
+                    TriggerServerEvent('inventory:server:recieveItem', Config.RewardsSmall[item].item, math.random(Config.RewardsSmall[item].minAmount, Config.RewardsSmall[item].maxAmount))
                     TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items[Config.RewardsSmall[item].item], "add")
                 elseif Config.RewardTypes[itemType].type == "money" then
                     QBInventoryNotify(Config.Lang["FoundMoneyDumpster"], "success")
-                    TriggerServerEvent('qb-inventory:server:givemoney', math.random(100, 400))
+                    TriggerServerEvent('inventory:server:givemoney', math.random(100, 400))
                 elseif Config.RewardTypes[itemType].type == "nothing" then
                     QBInventoryNotify(Config.Lang["FoundNothingDumpster"], "error")
                 end
@@ -1230,16 +1302,35 @@ end)
         end)
 
     CreateThread(function()
-        if Config.TargetSystem == "qb-target" then
+        if Config.TargetSystem == "qb_target" then
         exports['qb-target']:AddTargetModel(Config.Objects, {
             options = {
                 {
-                    event = "qb-inventory:client:searchtrash",
+                    event = "inventory:client:searchtrash",
                     icon = "fas fa-pencil-ruler",
                     label = "Search Trash",
                 },
             },
             distance = 2.1
+        })
+    elseif Config.TargetSystem == "customtarget" then
+        exports[Config.CustomTarget]:AddTargetModel(Config.Objects, {
+            options = {
+                {
+                    event = "inventory:client:searchtrash",
+                    icon = "fas fa-pencil-ruler",
+                    label = "Search Trash",
+                },
+            },
+            distance = 2.1
+        })
+    elseif Config.TargetSystem == "ox_target" then
+        exports.ox_target:addModel(Config.Objects, {
+            {
+                event = "inventory:client:searchtrash",
+                icon = "fas fa-pencil-ruler",
+                label = "Search Trash",
+            },
         })
     elseif Config.TargetSystem == "interact" then
         local binobjects = { -- The mighty list of vending machines
@@ -1263,7 +1354,7 @@ end)
             ignoreLos = true,
             options = {
                 {
-                    event = "qb-inventory:client:searchtrash",
+                    event = "inventory:client:searchtrash",
                     label = 'Search Trash',
                 },
             },
@@ -1271,5 +1362,21 @@ end)
     end
     end
     end)
-    elseif Config.BinEnable == false then
-    end 
+end
+
+    if Config.Print == true then
+
+    AddEventHandler('onResourceStop', function(resourceName) if resourceName ~= GetCurrentResourceName() then return end
+    if (GetCurrentResourceName() ~= resourceName) then        
+        return
+    end
+        print('^5--<^3!^5>-- ^5Reload ^5| ^5--<^3!^5>--^5Inventory V1.0.0 Stopped Successfully^5--<^3!^5>--^7')
+end)
+
+AddEventHandler('onResourceStart', function(resourceName) if resourceName ~= GetCurrentResourceName() then return end
+    if (GetCurrentResourceName() ~= resourceName) then        
+        return
+    end
+        print('^5--<^3!^5>-- ^5Reload ^5| ^5--<^3!^5>--^5Inventory V1.0.0 Started Successfully^5--<^3!^5>--^7')
+end)
+end
