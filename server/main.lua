@@ -1045,13 +1045,13 @@ local function OpenInventory(name, id, other, origin)
 			end
 			secondInv.name = "trunk-"..id
 			secondInv.label = "Trunk-"..id
-			secondInv.maxweight = Config.MaxTrunkWeight or 60000
+            secondInv.maxweight = other.maxweight or 60000
 			secondInv.inventory = {}
 			secondInv.slots = Config.MaxTrunkSlots or 50
 			if (Trunks[id] and Trunks[id].isOpen) or (QBCore.Shared.SplitStr(id, "PLZI")[2] and (Player.PlayerData.job.name ~= "police" or Player.PlayerData.job.type ~= "leo")) then
 				secondInv.name = "none-inv"
 				secondInv.label = "Trunk-None"
-				secondInv.maxweight = Config.MaxTrunkWeight or 60000
+				secondInv.maxweight = other.maxweight or 60000
 				secondInv.inventory = {}
 				secondInv.slots = 0
 			else
@@ -1138,9 +1138,9 @@ local function OpenInventory(name, id, other, origin)
 				secondInv.maxweight = Config.MaxInventoryWeight
 				secondInv.inventory = OtherPlayer.PlayerData.items
 				if (Player.PlayerData.job.name == "police" or Player.PlayerData.job.type == "leo") and Player.PlayerData.job.onduty then
-					secondInv.slots = Config.MaxInventorySlots + 15
+					secondInv.slots = Config.MaxInventorySlots
 				else
-					secondInv.slots = Config.MaxInventorySlots + 15
+					secondInv.slots = Config.MaxInventorySlots
 				end
 				Wait(250)
 			end
@@ -1345,13 +1345,13 @@ RegisterNetEvent('inventory:server:OpenInventory', function(name, id, other)
 				end
 				secondInv.name = "trunk-"..id
 				secondInv.label = "Trunk-"..id
-				secondInv.maxweight = Config.MaxTrunkWeight or 60000
+				secondInv.maxweight = other.maxweight or 60000
 				secondInv.inventory = {}
 				secondInv.slots = Config.MaxTrunkSlots or 50
 				if (Trunks[id] and Trunks[id].isOpen) or (QBCore.Shared.SplitStr(id, "PLZI")[2] and (Player.PlayerData.job.name ~= "police" or Player.PlayerData.job.type ~= "leo")) then
 					secondInv.name = "none-inv"
 					secondInv.label = "Trunk-None"
-					secondInv.maxweight = Config.MaxTrunkWeight or 60000
+					secondInv.maxweight = other.maxweight or 60000
 					secondInv.inventory = {}
 					secondInv.slots = 0
 				else
@@ -1438,9 +1438,9 @@ RegisterNetEvent('inventory:server:OpenInventory', function(name, id, other)
 					secondInv.maxweight = Config.MaxInventoryWeight
 					secondInv.inventory = OtherPlayer.PlayerData.items
 					if (Player.PlayerData.job.name == "police" or Player.PlayerData.job.type == "leo") and Player.PlayerData.job.onduty then
-						secondInv.slots = Config.MaxInventorySlots + 15
+						secondInv.slots = Config.MaxInventorySlots
 					else
-						secondInv.slots = Config.MaxInventorySlots + 15
+						secondInv.slots = Config.MaxInventorySlots
 					end
 					Wait(250)
 				end
