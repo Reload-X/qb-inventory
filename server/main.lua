@@ -209,7 +209,7 @@ local function AddItem(source, item, amount, slot, info, created)
 			end
 		end
 	elseif not Player.Offline then
-		QBInventoryNotify(source, Config.Lang["benInventoryTooFull"], "error")
+		QBInventoryNotify(source, Config.Lang["InventoryTooFull"], "error")
 	end
 	return false
 end
