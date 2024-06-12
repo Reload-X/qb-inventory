@@ -227,18 +227,6 @@ local function IsBackEngine(vehModel)
     return BackEngineVehicles[vehModel]
 end
 
-RegisterCommand('robme', function()
-    local ped = PlayerPedId()
-    QBCore.Functions.Progressbar("robbingme", "Touching myself...", 1000, false, true, {
-        disableMovement = true,
-        disableCarMovement = true,
-        disableMouse = false,
-        disableCombat = true,
-    }, {}, {}, {}, function() -- Done
-        TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", GetPlayerServerId(PlayerId()))
-    end)
-end, false)
-
 
 local function OpenTrunk()
     local vehicle = QBCore.Functions.GetClosestVehicle()
