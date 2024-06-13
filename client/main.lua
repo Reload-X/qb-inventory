@@ -180,7 +180,7 @@ local function OpenVending()
     ShopItems.label = "Vending Machine"
     ShopItems.items = Config.VendingItem
     ShopItems.slots = #Config.VendingItem
-    TriggerServerEvent("qb-inventory:server:OpenInventory", "shop", "Vendingshop_"..math.random(1, 99), ShopItems)
+    TriggerServerEvent("inventory:server:OpenInventory", "shop", "Vendingshop_"..math.random(1, 99), ShopItems)
 end
 
 local function DrawText3Ds(x, y, z, text)
@@ -235,7 +235,7 @@ RegisterCommand('robme', function()
         disableMouse = false,
         disableCombat = true,
     }, {}, {}, {}, function() -- Done
-        TriggerServerEvent("qb-inventory:server:OpenInventory", "otherplayer", GetPlayerServerId(PlayerId()))
+        TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", GetPlayerServerId(PlayerId()))
     end)
 end, false)
 
@@ -440,7 +440,7 @@ local function CreateItemDrop(index)
 					icon = 'fa-solid fa-bag-shopping',
 					label = "Open Bag",
 					action = function()
-						TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", index)
+						TriggerServerEvent("inventory:server:OpenInventory", "drop", index)
 					end,
 				}
 			},
@@ -452,7 +452,7 @@ local function CreateItemDrop(index)
                     icon = 'fa-solid fa-bag-shopping',
                     label = "Open Bag",
                     action = function()
-                        TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", index)
+                        TriggerServerEvent("inventory:server:OpenInventory", "drop", index)
                     end,
                 }
             },
@@ -463,7 +463,7 @@ local function CreateItemDrop(index)
                     icon = 'fa-solid fa-bag-shopping',
                     label = "Open Bag",
                     onSelect = function()
-                        TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", index)
+                        TriggerServerEvent("inventory:server:OpenInventory", "drop", index)
                     end,
                 }
         })
@@ -480,7 +480,7 @@ local function CreateItemDrop(index)
                     icon = 'fa-solid fa-bag-shopping',
                     label = 'Open Drop',
                     action = function()
-                        TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", index)
+                        TriggerServerEvent("inventory:server:OpenInventory", "drop", index)
                     end,
                 }
             },
@@ -568,7 +568,7 @@ end
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     LocalPlayer.state:set("inv_busy", false, true)
     PlayerData = QBCore.Functions.GetPlayerData()
-    QBCore.Functions.TriggerCallback("qb-inventory:server:GetCurrentDrops", function(theDrops)
+    QBCore.Functions.TriggerCallback("inventory:server:GetCurrentDrops", function(theDrops)
 		Drops = theDrops
     end)
 end)
@@ -907,7 +907,7 @@ RegisterNetEvent('inventory:client:craftTarget',function()
     local crafting = {}
     crafting.label = "Crafting"
     crafting.items = GetThresholdItems()
-    TriggerServerEvent("qb-inventory:server:OpenInventory", "crafting", math.random(1, 99), crafting)
+    TriggerServerEvent("inventory:server:OpenInventory", "crafting", math.random(1, 99), crafting)
 end)
 
 -- Commands
@@ -981,21 +981,21 @@ RegisterCommand('inventory', function()
                     maxweight = maxweight,
                     slots = slots,
                 }
-                TriggerServerEvent("qb-inventory:server:OpenInventory", "trunk", CurrentVehicle, other)
+                TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle, other)
                 OpenTrunk()
             elseif CurrentGlovebox then
-                TriggerServerEvent("qb-inventory:server:OpenInventory", "glovebox", CurrentGlovebox)
+                TriggerServerEvent("inventory:server:OpenInventory", "glovebox", CurrentGlovebox)
             elseif CurrentDrop ~= 0 then
-                TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
             elseif VendingMachine then
                 local ShopItems = {}
                 ShopItems.label = "Vending Machine"
                 ShopItems.items = Config.VendingItem
                 ShopItems.slots = #Config.VendingItem
-                TriggerServerEvent("qb-inventory:server:OpenInventory", "shop", "Vendingshop_"..math.random(1, 99), ShopItems)
+                TriggerServerEvent("inventory:server:OpenInventory", "shop", "Vendingshop_"..math.random(1, 99), ShopItems)
             else
                 openAnim()
-                TriggerServerEvent("qb-inventory:server:OpenInventory")
+                TriggerServerEvent("inventory:server:OpenInventory")
             end
         end
     end
@@ -1018,7 +1018,7 @@ for i = 1, 6 do
             if i == 6 then
                 i = Config.MaxInventorySlots
             end
-            TriggerServerEvent("qb-inventory:server:UseItemSlot", i)
+            TriggerServerEvent("inventory:server:UseItemSlot", i)
         end
     end, false)
     RegisterKeyMapping('slot' .. i, 'Uses the item in slot ' .. i, 'keyboard', i)
@@ -1091,16 +1091,16 @@ RegisterNUICallback("CloseInventory", function()
     end
     if CurrentVehicle ~= nil then
         CloseTrunk()
-        TriggerServerEvent("qb-inventory:server:SaveInventory", "trunk", CurrentVehicle)
+        TriggerServerEvent("inventory:server:SaveInventory", "trunk", CurrentVehicle)
         CurrentVehicle = nil
     elseif CurrentGlovebox ~= nil then
-        TriggerServerEvent("qb-inventory:server:SaveInventory", "glovebox", CurrentGlovebox)
+        TriggerServerEvent("inventory:server:SaveInventory", "glovebox", CurrentGlovebox)
         CurrentGlovebox = nil
     elseif CurrentStash ~= nil then
-        TriggerServerEvent("qb-inventory:server:SaveInventory", "stash", CurrentStash)
+        TriggerServerEvent("inventory:server:SaveInventory", "stash", CurrentStash)
         CurrentStash = nil
     else
-        TriggerServerEvent("qb-inventory:server:SaveInventory", "drop", CurrentDrop)
+        TriggerServerEvent("inventory:server:SaveInventory", "drop", CurrentDrop)
         CurrentDrop = nil
     end
     Wait(50)
@@ -1110,12 +1110,12 @@ RegisterNUICallback("CloseInventory", function()
 end)
 
 RegisterNUICallback("UseItem", function(data, cb)
-    TriggerServerEvent("qb-inventory:server:UseItem", data.inventory, data.item)
+    TriggerServerEvent("inventory:server:UseItem", data.inventory, data.item)
     cb('ok')
 end)
 
 RegisterNUICallback("SetInventoryData", function(data, cb)
-    TriggerServerEvent("qb-inventory:server:SetInventoryData", data.fromInventory, data.toInventory, data.fromSlot, data.toSlot, data.fromAmount, data.toAmount)
+    TriggerServerEvent("inventory:server:SetInventoryData", data.fromInventory, data.toInventory, data.fromSlot, data.toSlot, data.fromAmount, data.toAmount)
     cb('ok')
 end)
 
@@ -1214,19 +1214,19 @@ end)
 
 
     --qb-target
-    RegisterNetEvent("qb-inventory:client:Crafting", function(dropId)
+    RegisterNetEvent("inventory:client:Crafting", function(dropId)
         local crafting = {}
         crafting.label = "Crafting"
         crafting.items = GetThresholdItems()
-        TriggerServerEvent("qb-inventory:server:OpenInventory", "crafting", math.random(1, 99), crafting)
+        TriggerServerEvent("inventory:server:OpenInventory", "crafting", math.random(1, 99), crafting)
     end)
     
     
-    RegisterNetEvent("qb-inventory:client:WeaponAttachmentCrafting", function(dropId)
+    RegisterNetEvent("inventory:client:WeaponAttachmentCrafting", function(dropId)
         local crafting = {}
         crafting.label = "Attachment Crafting"
         crafting.items = GetAttachmentThresholdItems()
-        TriggerServerEvent("qb-inventory:server:OpenInventory", "attachment_crafting", math.random(1, 99), crafting)
+        TriggerServerEvent("inventory:server:OpenInventory", "attachment_crafting", math.random(1, 99), crafting)
     end)
 
     if Config.BinEnable == true then 
@@ -1306,7 +1306,7 @@ end)
         exports['qb-target']:AddTargetModel(Config.Objects, {
             options = {
                 {
-                    event = "qb-inventory:client:searchtrash",
+                    event = "inventory:client:searchtrash",
                     icon = "fas fa-pencil-ruler",
                     label = "Search Trash",
                 },
@@ -1317,7 +1317,7 @@ end)
         exports[Config.CustomTarget]:AddTargetModel(Config.Objects, {
             options = {
                 {
-                    event = "qb-inventory:client:searchtrash",
+                    event = "inventory:client:searchtrash",
                     icon = "fas fa-pencil-ruler",
                     label = "Search Trash",
                 },
@@ -1327,7 +1327,7 @@ end)
     elseif Config.TargetSystem == "ox_target" then
         exports.ox_target:addModel(Config.Objects, {
             {
-                event = "qb-inventory:client:searchtrash",
+                event = "inventory:client:searchtrash",
                 icon = "fas fa-pencil-ruler",
                 label = "Search Trash",
             },
@@ -1354,7 +1354,7 @@ end)
             ignoreLos = true,
             options = {
                 {
-                    event = "qb-inventory:client:searchtrash",
+                    event = "inventory:client:searchtrash",
                     label = 'Search Trash',
                 },
             },
