@@ -893,7 +893,7 @@ local function AddToDrop(dropId, slot, itemName, amount, info, created)
 		}
 	end
 
-	-- OnDropUpdate(dropId, Drops[dropId])
+	OnDropUpdate(dropId, Drops[dropId])
 end
 
 
@@ -913,7 +913,7 @@ local function RemoveFromDrop(dropId, slot, itemName, amount)
 		end
 	end
 	
-	-- OnDropUpdate(dropId, Drops[dropId])
+	OnDropUpdate(dropId, Drops[dropId])
 end
 
 local function CreateDropId()
@@ -973,7 +973,7 @@ local function CreateNewDrop(source, fromSlot, toSlot, itemAmount, created)
 		end
 
 		
-		-- OnDropUpdate(dropId, Drops[dropId])
+		OnDropUpdate(dropId, Drops[dropId])
 	else
 		QBInventoryNotify(source, Config.Lang["YouDontHaveThisItem"], "error")
 		return
