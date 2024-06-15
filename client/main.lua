@@ -1355,6 +1355,45 @@ end)
     end)
 end
 
+if Config.AmmoBoxes == true then
+
+RegisterNetEvent('qb-inventory:Client:OpenAmmoBoxPistol', function(source)
+    local src = source
+    TriggerServerEvent("InteractSound_SV:PlayOnSource", "Stash", 0.25)
+    QBCore.Functions.Progressbar('unwrapping_present', 'Opening Fleeca', 5000, false, true, {
+        disableMovement = true,
+        disableCarMovement = true,
+        disableMouse = false,
+        disableCombat = true,
+    }, {
+    animDict = 'anim@gangops@facility@servers@',
+        anim = 'hotwire',
+        flags = 17,
+    }, {}, {}, function()
+        ClearPedTasks(PlayerPedId())
+        TriggerServerEvent('qb-inventory:Server:AmmoBoxRewardsPistol')
+    end)
+end)
+
+RegisterNetEvent('qb-inventory:Client:OpenAmmoBoxRifle', function(source)
+    local src = source
+    TriggerServerEvent("InteractSound_SV:PlayOnSource", "Stash", 0.25)
+    QBCore.Functions.Progressbar('unwrapping_present', 'Opening Bankkit', 5000, false, true, {
+        disableMovement = true,
+        disableCarMovement = true,
+        disableMouse = false,
+        disableCombat = true,
+    }, {
+    animDict = 'anim@gangops@facility@servers@',
+        anim = 'hotwire',
+        flags = 17,
+    }, {}, {}, function()
+        ClearPedTasks(PlayerPedId())
+        TriggerServerEvent('qb-inventory:Server:AmmoBoxRewardsRifle')
+    end)
+end)
+end
+
     if Config.Print == true then
 
     AddEventHandler('onResourceStop', function(resourceName) if resourceName ~= GetCurrentResourceName() then return end
