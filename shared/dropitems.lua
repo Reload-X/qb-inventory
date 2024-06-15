@@ -219,7 +219,7 @@ Config.DropItems = {
 
        -- Communication
 
-       phone = `lb_phone_prop`,
+       phone = `prop_player_phone_01`,
        radio = `prop_cs_walkie_talkie`,
     
        -- Theft and Jewelry
@@ -264,7 +264,7 @@ Config.DropItems = {
        cups = `prop_plastic_cup_02`,
        contract = `prop_cd_paper_pile3`,
        flyid = `prop_cs_swipe_card`,
-       hacker_phone = `lb_phone_prop`,
+       hacker_phone = `prop_player_phone_01`,
        dogfood = `prop_paper_bag_01`,
        catfood = `prop_paper_bag_01`,
        chickenfood = `prop_paper_bag_01`,
@@ -301,7 +301,7 @@ Config.DropItems = {
       book = `prop_cs_stock_book`,
       bracelet = `prop_jewel_03a`,
       sculpture = `prop_toiletfoot_static`,
-      j_phone = `lb_phone_prop`,
+      j_phone = `prop_player_phone_01`,
       tapeplayer = `prop_boombox_01`,
       coffemachine = `prop_coffee_mac_02`,
       bong = `prop_bong_01`,
@@ -314,7 +314,7 @@ Config.DropItems = {
       flat_television = `prop_tv_flat_michael`,
       television = `prop_tv_05`,
       monitor = `prop_monitor_w_large`,
-      npc_phone = `lb_phone_prop`,
+      npc_phone = `prop_player_phone_01`,
       printer = `prop_printer_02`,
       laptop = `prop_laptop_02_closed`,
       loot_bag = `prop_cs_heist_bag_01`,
