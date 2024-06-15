@@ -45,3 +45,5 @@ Config.MaximumAmmoValues = {
     ["shotgun"] = 200,
     ["rifle"] = 250,
 }
+
+Config.AmmoBoxes = false -- If this is enabled then you can use ammboxes in return for ammo
