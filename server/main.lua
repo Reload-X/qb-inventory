@@ -2638,3 +2638,36 @@ if Config.BinEnable == true then
 	end
 elseif Config.BinEnable == false then
 end
+
+if Config.AmmoBoxes == true then
+--New Code
+QBCore.Functions.CreateUseableItem("ammoboxpistol", function(source, item)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if not Player.Functions.RemoveItem('ammoboxpistol') then return end
+        TriggerClientEvent('qb-inventory:Client:OpenAmmoBoxPistol', src, item)
+end)
+
+-- Gift Box Rewards --
+RegisterNetEvent('qb-inventory:Server:AmmoBoxRewardsPistol', function()
+    local Player = QBCore.Functions.GetPlayer(source)
+    if not Player then return end
+    Player.Functions.RemoveItem("ammoboxpistol", 1)
+    Player.Functions.AddItem("pistol_ammo", 3)
+end)
+
+QBCore.Functions.CreateUseableItem("ammoboxrifle", function(source, item)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if not Player.Functions.RemoveItem('ammoboxrifle') then return end
+        TriggerClientEvent('qb-inventory:Client:OpenAmmoBoxRifle', src, item)
+end)
+
+-- Gift Box Rewards --
+RegisterNetEvent('qb-inventory:Server:AmmoBoxRewardsRifle', function()
+    local Player = QBCore.Functions.GetPlayer(source)
+    if not Player then return end
+    Player.Functions.RemoveItem("ammoboxrifle", 1)
+    Player.Functions.AddItem("rifle_ammo", 6)
+end)
+end
