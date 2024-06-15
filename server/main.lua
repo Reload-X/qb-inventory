@@ -7,6 +7,15 @@ local Gloveboxes = {}
 local Stashes = {}
 local ShopItems = {}
 
+local CodeID = {
+	codeName = '^5Reload Script NoPixel Inspired 4.0 - Inventory System',
+	version = '1.0.0'
+  }
+  
+  Citizen.CreateThread(function()
+  print('[' .. CodeID.codeName .. '] v' .. CodeID.version .. ' started!')
+  end)
+
 function QBInventoryNotify(source, msg, type, length)
     if Framework == "QBCore" then
     	FWork.Functions.Notify(source, msg, type, length)
