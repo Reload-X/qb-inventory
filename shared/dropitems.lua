@@ -2,21 +2,15 @@ Config.DropItems = {
     weed_skunk = `prop_stockade_wheel_flat`,
     lockpick = `v_res_tre_plant`,
     jerry_can = `prop_jerrycan_01a`,
-
-
-      --Melees
-      weapon_dagger = `prop_w_me_dagger`,
-      weapon_bat = `p_cs_bbbat_01`,
-      weapon_bottle = `prop_w_me_bottle`,
-      weapon_crowbar = `prop_ing_crowbar`,
-    --   weapon_flashlight = `w_pi_pistol_mag1`,
+    weapon_dagger = `prop_w_me_dagger`,
+    weapon_bat = `p_cs_bbbat_01`,
+    weapon_bottle = `prop_w_me_bottle`,
+    weapon_crowbar = `prop_ing_crowbar`,
     weapon_golfclub = `prop_golf_iron_01`,
     weapon_hammer = `prop_tool_hammer`,
     weapon_hatchet = `prop_w_me_hatchet`,
-    -- weapon_knuckle = `w_pi_pistol_mag1`,
     weapon_knife = `prop_cs_bowie_knife`,
     weapon_machete = `prop_ld_w_me_machette`,
-    -- weapon_switchblade = `w_pi_pistol_mag1`,
     weapon_nightstick = `w_me_nightstick`,
     weapon_wrench = `prop_tool_wrench`,
     weapon_battleaxe = `prop_tool_fireaxe`,
@@ -225,7 +219,7 @@ Config.DropItems = {
 
        -- Communication
 
-       phone = `prop_player_phone_01`,
+       phone = `lb_phone_prop`,
        radio = `prop_cs_walkie_talkie`,
     
        -- Theft and Jewelry
@@ -270,7 +264,7 @@ Config.DropItems = {
        cups = `prop_plastic_cup_02`,
        contract = `prop_cd_paper_pile3`,
        flyid = `prop_cs_swipe_card`,
-       hacker_phone = `prop_player_phone_01`,
+       hacker_phone = `lb_phone_prop`,
        dogfood = `prop_paper_bag_01`,
        catfood = `prop_paper_bag_01`,
        chickenfood = `prop_paper_bag_01`,
@@ -307,7 +301,7 @@ Config.DropItems = {
       book = `prop_cs_stock_book`,
       bracelet = `prop_jewel_03a`,
       sculpture = `prop_toiletfoot_static`,
-      j_phone = `prop_player_phone_01`,
+      j_phone = `lb_phone_prop`,
       tapeplayer = `prop_boombox_01`,
       coffemachine = `prop_coffee_mac_02`,
       bong = `prop_bong_01`,
@@ -320,7 +314,7 @@ Config.DropItems = {
       flat_television = `prop_tv_flat_michael`,
       television = `prop_tv_05`,
       monitor = `prop_monitor_w_large`,
-      npc_phone = `prop_player_phone_01`,
+      npc_phone = `lb_phone_prop`,
       printer = `prop_printer_02`,
       laptop = `prop_laptop_02_closed`,
       loot_bag = `prop_cs_heist_bag_01`,
