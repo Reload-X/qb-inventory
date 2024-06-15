@@ -11,16 +11,19 @@ shared_scripts {
 	'shared/bin.lua',
 	'shared/vending.lua',
 	'shared/lang.lua',
+	'shared/dropitems.lua',
 	'@qb-weapons/config.lua'
 }
 
 server_scripts {
 	'@oxmysql/lib/MySQL.lua',
 	'server/main.lua',
+	'server/visual.lua',
 }
 
 client_scripts {
 	'client/main.lua',
+	'client/visual.lua',
 }
 
 
