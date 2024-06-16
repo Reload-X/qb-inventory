@@ -1,3 +1,4 @@
+
 -- rand range 1.5 meters xy
 
 local RENDER_DISTANCE_SPAWN = 70
@@ -126,7 +127,7 @@ local function FindSpawnPointForProp(coord, itemCount, model, dropId)
     return coord
 end
 
-local function SpawnGroundProp(model, coords)
+local function SpawnGroundProp(model, coords, dropId)
     if IsModelInCdimage(model) then
         RequestModel(model)
         while not HasModelLoaded(model) do Wait(0) end
@@ -139,6 +140,9 @@ local function SpawnGroundProp(model, coords)
         coords, 
         false, false, false
     )
+
+
+
     SetEntityRotation(dropItem, vector3(-90.0, 0.0, 0.0), 2)
     PlaceObjectOnGroundProperly(dropItem)
     ActivatePhysics(dropItem)
@@ -169,6 +173,16 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
 
     if #itemsTable == 0 and droppedItems[dropId] then
         for _, obj in pairs(droppedItems[dropId].placedProps) do
+
+            if Config.TargetSystem == "qb_target" then
+                exports['qb-target']:RemoveZone(tostring(obj))
+            elseif Config.TargetSystem == "customtarget" then
+                exports[Config.CustomTarget]:RemoveZone(tostring(obj))
+            elseif Config.TargetSystem == "ox_target" then
+                exports.ox_target:removeZone(tostring(obj))
+            elseif Config.TargetSystem == "interact" then
+                exports.interact:RemoveInteraction(tostring(obj))
+            end
             DeleteEntity(obj)
         end
 
@@ -183,7 +197,79 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
         if #(pedCoord - coords) < RENDER_DISTANCE_SPAWN then
             for _, propModel in pairs(droppedItems[dropId].props) do
                 local pos = FindSpawnPointForProp(droppedItems[dropId].coords, tablelength(droppedItems[dropId].placedProps), propModel, dropId)
-                droppedItems[dropId].placedProps[propModel] = SpawnGroundProp(propModel, pos)
+                droppedItems[dropId].placedProps[propModel] = SpawnGroundProp(propModel, pos, dropId)
+
+                Citizen.Wait(10)
+                local zoneName = tostring(droppedItems[dropId].placedProps[propModel])
+                local coordslol = vector3(pos.x, pos.y, pos.z)
+
+
+                if Config.TargetSystem == "qb_target" then
+                    exports['qb-target']:AddCircleZone(zoneName, coordslol, 2.5, {
+                        name = zoneName,
+                        debugPoly = false,
+                        useZ = true
+                    }, {
+                        options = {
+                            {
+                                label = "Pick Up",
+                                icon = 'fas fa-hand',
+                                action = function()
+                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                end
+                            },
+                        },
+                        distance = 2.5
+                    })
+                elseif Config.TargetSystem == "customtarget" then
+                    exports[Config.CustomTarget]:AddCircleZone(zoneName, coordslol, 2.5, {
+                        name = zoneName,
+                        debugPoly = false,
+                        useZ = true
+                    }, {
+                        options = {
+                            {
+                                label = "Pick Up",
+                                icon = 'fas fa-hand',
+                                action = function()
+                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                end
+                            },
+                        },
+                        distance = 2.5
+                    })
+                elseif Config.TargetSystem == "ox_target" then
+                    exports.ox_target:addBoxZone({
+                        coords = vec(coordslol),
+                        name = zoneName,
+                        options = {
+                            {
+                                label = "Pick Up",
+                                icon = 'fas fa-hand',
+                                onSelect = function()
+                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                end
+                            }
+                        }
+                    })
+                elseif Config.TargetSystem == "interact" then
+                    exports.interact:AddInteraction({
+                        coords = vec3(coordslol),
+                        distance = 6.0, -- optional
+                        interactDst = 2.0, -- optional
+                        ignoreLos = true,
+                        id = zoneName, -- needed for removing interactions
+                        name = zoneName, -- optional
+                        options = {
+                            {
+                                label = "Pick Up",
+                                action = function()
+                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                end
+                            },
+                        },
+                    })
+                end
             end
         end
     else
@@ -195,6 +281,15 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
 
         for _, itm in pairs(itemsToRemove) do
             if droppedItems[dropId].placedProps[itm] then
+                if Config.TargetSystem == "qb_target" then
+                    exports['qb-target']:RemoveZone(tostring(droppedItems[dropId].placedProps[itm]))
+                elseif Config.TargetSystem == "customtarget" then
+                    exports[Config.CustomTarget]:RemoveZone(tostring(droppedItems[dropId].placedProps[itm]))
+                elseif Config.TargetSystem == "ox_target" then
+                    exports.ox_target:removeZone(tostring(droppedItems[dropId].placedProps[itm]))
+                elseif Config.TargetSystem == "interact" then
+                    exports.interact:RemoveInteraction(tostring(droppedItems[dropId].placedProps[itm]))
+                end
                 DeleteEntity(droppedItems[dropId].placedProps[itm])
                 droppedItems[dropId].placedProps[itm] = nil
             end
@@ -205,7 +300,81 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
             
             if #(pedCoord - coords) < RENDER_DISTANCE_SPAWN then
                 local pos = FindSpawnPointForProp(droppedItems[dropId].coords, tablelength(droppedItems[dropId].placedProps), itm, dropId)
-                droppedItems[dropId].placedProps[itm] = SpawnGroundProp(itm, pos)
+                droppedItems[dropId].placedProps[itm] = SpawnGroundProp(itm, pos, dropId)
+
+                Citizen.Wait(10)
+                local zoneName = tostring(droppedItems[dropId].placedProps[itm])
+                local coordslol = vector3(pos.x, pos.y, pos.z)
+                
+                if Config.TargetSystem == "qb_target" then
+
+                    exports['qb-target']:AddCircleZone(zoneName, coordslol, 2.5, {
+                        name = zoneName,
+                        debugPoly = false,
+                        useZ = true
+                    }, {
+                        options = {
+                            {
+                                label = "Pick Up",
+                                icon = 'fas fa-hand',
+                                action = function()
+                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                end
+                            },
+                        },
+                        distance = 2.5
+                    })
+
+                elseif Config.TargetSystem == "customtarget" then
+
+                    exports[Config.CustomTarget]:AddCircleZone(zoneName, coordslol, 2.5, {
+                        name = zoneName,
+                        debugPoly = false,
+                        useZ = true
+                    }, {
+                        options = {
+                            {
+                                label = "Pick Up",
+                                icon = 'fas fa-hand',
+                                action = function()
+                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                end
+                            },
+                        },
+                        distance = 2.5
+                    })
+
+                elseif Config.TargetSystem == "ox_target" then
+                    exports.ox_target:addBoxZone({
+                        coords = vec(coordslol),
+                        options = {
+                            {
+                                label = "Pick Up",
+                                onSelect = function()
+                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                end
+                            }
+                        }
+                    })
+                elseif Config.TargetSystem == "interact" then
+                    exports.interact:AddInteraction({
+                        coords = vec3(coordslol),
+                        distance = 6.0, -- optional
+                        interactDst = 2.0, -- optional
+                        ignoreLos = true,
+                        id = zoneName, -- needed for removing interactions
+                        name = zoneName, -- optional
+                        options = {
+                            {
+                                label = "Pick Up",
+                                action = function()
+                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                end
+                            },
+                        },
+                    })
+                end
+
             end
         end
     end
@@ -230,11 +399,94 @@ Citizen.CreateThread(function()
                 for _, modelName in pairs(data.props) do
                     if not data.placedProps[modelName] then
                         local pos = FindSpawnPointForProp(data.coords, tablelength(data.placedProps), modelName, dropId)
-                        data.placedProps[modelName] = SpawnGroundProp(modelName, pos)
+                        data.placedProps[modelName] = SpawnGroundProp(modelName, pos, dropId)
+
+                        Citizen.Wait(10)
+                        local zoneName = tostring(data.placedProps[modelName])
+                        local coordslol = vector3(pos.x, pos.y, pos.z)
+
+                        if Config.TargetSystem == "qb_target" then
+                        
+                            exports['qb-target']:AddCircleZone(zoneName, coordslol, 2.5, {
+                                name = zoneName,
+                                debugPoly = false,
+                                useZ = true
+                            }, {
+                                options = {
+                                    {
+                                        label = "Pick Up",
+                                        icon = 'fas fa-hand',
+                                        action = function()
+                                            TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                        end
+                                    },
+                                },
+                                distance = 2.5
+                            })
+
+                        elseif Config.TargetSystem == "customtarget" then
+
+                            exports[Config.CustomTarget]:AddCircleZone(zoneName, coordslol, 2.5, {
+                                name = zoneName,
+                                debugPoly = false,
+                                useZ = true
+                            }, {
+                                options = {
+                                    {
+                                        label = "Pick Up",
+                                        icon = 'fas fa-hand',
+                                        action = function()
+                                            TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                        end
+                                    },
+                                },
+                                distance = 2.5
+                            })
+
+                        elseif Config.TargetSystem == "ox_target" then
+                            exports.ox_target:addBoxZone({
+                                coords = vec(coordslol),
+                                options = {
+                                    {
+                                        label = "Pick Up",
+                                        onSelect = function()
+                                            TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                        end
+                                    }
+                                }
+                            })
+                        elseif Config.TargetSystem == "interact" then
+                            exports.interact:AddInteraction({
+                                coords = vec3(coordslol),
+                                distance = 6.0, -- optional
+                                interactDst = 2.0, -- optional
+                                ignoreLos = true,
+                                id = zoneName, -- needed for removing interactions
+                                name = zoneName, -- optional
+                                options = {
+                                    {
+                                        label = "Pick Up",
+                                        action = function()
+                                            TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                        end
+                                    },
+                                },
+                            })
+                        end
+                        
                     end
                 end
             elseif #(pedCoord - data.coords) > RENDER_DISTANCE_DESPAWN then
                 for idx, ent in pairs(data.placedProps) do
+                    if Config.TargetSystem == "qb_target" then
+                        exports['qb-target']:RemoveZone(tostring(ent))
+                    elseif Config.TargetSystem == "customtarget" then
+                        exports[Config.CustomTarget]:RemoveZone(tostring(ent))
+                    elseif Config.TargetSystem == "ox_target" then
+                        exports.ox_target:removeZone(tostring(ent))
+                    elseif Config.TargetSystem == "interact" then
+                        exports.interact:RemoveInteraction(tostring(ent))
+                    end
                     DeleteEntity(ent)
                     data.placedProps[idx] = nil
                 end
@@ -250,6 +502,15 @@ AddEventHandler('onResourceStop', function(resourceName)
 
     for _, data in pairs(droppedItems) do
         for idx, ent in pairs(data.placedProps) do
+            if Config.TargetSystem == "qb_target" then
+                exports['qb-target']:RemoveZone(tostring(ent))
+            elseif Config.TargetSystem == "customtarget" then
+                exports[Config.CustomTarget]:RemoveZone(tostring(ent))
+            elseif Config.TargetSystem == "ox_target" then
+                exports.ox_target:removeZone(tostring(ent))
+            elseif Config.TargetSystem == "interact" then
+                exports.interact:RemoveInteraction(tostring(ent))
+            end
             DeleteEntity(ent)
         end
     end
