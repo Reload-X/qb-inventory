@@ -20,7 +20,7 @@ Config.KeyBinds = {
 --Target/Drop System
 Config.CleanupDropTime = 15 * 60 -- How many seconds it takes for drops to be untouched before being deleted
 Config.MaxDropViewDistance = 12.5 -- The distance in GTA Units that a drop can be seen
-Config.ItemDropObject = `sf_prop_sf_backpack_01a`
+Config.ItemDropObject = `prop_paper_bag_small`
 Config.Waittime = 0 -- Time to open inventory 2000 = 2 seconds
 Config.Print = true 
 Config.OrApartment = false
