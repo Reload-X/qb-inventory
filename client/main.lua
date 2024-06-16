@@ -5,7 +5,7 @@ local inInventory = false
 local currentWeapon = nil
 local currentOtherInventory = nil
 local Drops = {}
-local CurrentDrop = nil
+CurrentDrop = nil
 local DropsNear = {}
 local CurrentVehicle = nil
 local CurrentGlovebox = nil
@@ -1149,14 +1149,6 @@ CreateThread(function()
             for k, v in pairs(DropsNear) do
 
                 if DropsNear[k] ~= nil then
-                    if Config.UseItemDrop then
-                        if not v.isDropShowing then
-                            CreateItemDrop(k)
-                        end
-                    else
-                        sleep = 0
-                        DrawMarker(20, v.coords.x, v.coords.y, v.coords.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3, 0.15, 0, 248, 185, 255, false, false, false, 1, false, false, false)
-                    end
 
 					local coords = (v.object ~= nil and GetEntityCoords(v.object)) or vector3(v.coords.x, v.coords.y, v.coords.z)
 					local distance = #(GetEntityCoords(ped) - coords)
