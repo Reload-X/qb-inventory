@@ -240,7 +240,7 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
                     })
                 elseif Config.TargetSystem == "ox_target" then
                     exports.ox_target:addBoxZone({
-                        coords = vec(coordslol),
+                        coords = coordslol,
                         name = zoneName,
                         options = {
                             {
@@ -346,7 +346,8 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
 
                 elseif Config.TargetSystem == "ox_target" then
                     exports.ox_target:addBoxZone({
-                        coords = vec(coordslol),
+                        coords = coordslol,
+                        name = zoneName,
                         options = {
                             {
                                 label = "Pick Up",
@@ -445,7 +446,8 @@ Citizen.CreateThread(function()
 
                         elseif Config.TargetSystem == "ox_target" then
                             exports.ox_target:addBoxZone({
-                                coords = vec(coordslol),
+                                coords = coordslol,
+                                name = zoneName,
                                 options = {
                                     {
                                         label = "Pick Up",
