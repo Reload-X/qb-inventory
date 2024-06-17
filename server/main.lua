@@ -1019,11 +1019,11 @@ local function OpenInventory(name, id, other, origin)
 			secondInv.label = "Stash-"..id
 			secondInv.maxweight = maxweight
 			secondInv.inventory = {}
-			secondInv.slots = slots
+			secondInv.slots = other.slots
 			if Stashes[id] and Stashes[id].isOpen then
 				secondInv.name = "none-inv"
 				secondInv.label = "Stash-None"
-				secondInv.maxweight = 1000000
+				secondInv.maxweight = maxweight
 				secondInv.inventory = {}
 				secondInv.slots = 0
 			else
@@ -1319,13 +1319,13 @@ RegisterNetEvent('qb-inventory:server:OpenInventory', function(name, id, other)
 			secondInv.label = "Stash-"..id
 			secondInv.maxweight = maxweight
 			secondInv.inventory = {}
-			secondInv.slots = slots
+			secondInv.slots = other.slots
 			if Stashes[id] and Stashes[id].isOpen then
 				secondInv.name = "none-inv"
 				secondInv.label = "Stash-None"
 				secondInv.maxweight = 1000000
 				secondInv.inventory = {}
-				secondInv.slots = 0
+				secondInv.slots = maxweight
 			else
 					local stashItems = GetStashItems(id)
 					if next(stashItems) then
