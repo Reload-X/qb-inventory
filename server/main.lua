@@ -1323,9 +1323,9 @@ RegisterNetEvent('qb-inventory:server:OpenInventory', function(name, id, other)
 			if Stashes[id] and Stashes[id].isOpen then
 				secondInv.name = "none-inv"
 				secondInv.label = "Stash-None"
-				secondInv.maxweight = 1000000
+				secondInv.maxweight = maxweight
 				secondInv.inventory = {}
-				secondInv.slots = maxweight
+				secondInv.slots = 0
 			else
 					local stashItems = GetStashItems(id)
 					if next(stashItems) then
