@@ -1,4 +1,10 @@
 Config.DropItems = {
+  --ZAT PROPS START
+  -- zatminingrack = `prop_mining_rack`,
+  zatminingfan = `prop_mining_fan`,
+  zatbaskets = `prop_basket_s`,
+  zatbasketm = `prop_basket_m`,
+  --ZAT PROP END
     weed_skunk = `prop_stockade_wheel_flat`,
     lockpick = `v_res_tre_plant`,
     jerry_can = `prop_jerrycan_01a`,
