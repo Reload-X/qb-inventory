@@ -149,6 +149,15 @@ end
 
 exports("HasItem", HasItem)
 
+RegisterNUICallback('showBlur', function()
+    Wait(50)
+    TriggerEvent("qb-inventory:client:showBlur")
+end) 
+RegisterNetEvent("qb-inventory:client:showBlur", function()
+    Wait(50)
+    showBlur = not showBlur
+end)
+
 -- Functions
 
 local function GetClosestVending()
@@ -171,7 +180,7 @@ local function OpenVending()
     ShopItems.label = "Vending Machine"
     ShopItems.items = Config.VendingItem
     ShopItems.slots = #Config.VendingItem
-    TriggerServerEvent("qb-inventory:server:OpenInventory", "shop", "Vendingshop_"..math.random(1, 99), ShopItems)
+    TriggerServerEvent("inventory:server:OpenInventory", "shop", "Vendingshop_"..math.random(1, 99), ShopItems)
 end
 
 local function DrawText3Ds(x, y, z, text)
@@ -226,7 +235,7 @@ RegisterCommand('robme', function()
         disableMouse = false,
         disableCombat = true,
     }, {}, {}, {}, function() -- Done
-        TriggerServerEvent("qb-inventory:server:OpenInventory", "otherplayer", GetPlayerServerId(PlayerId()))
+        TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", GetPlayerServerId(PlayerId()))
     end)
 end, false)
 
@@ -415,6 +424,8 @@ local function RemoveAllNearbyDrops()
     end
 end
 
+--ITEM DROP
+
 --VENDING
 
 if Config.VendingMachine == true then
@@ -495,7 +506,7 @@ end
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     LocalPlayer.state:set("inv_busy", false, true)
     PlayerData = QBCore.Functions.GetPlayerData()
-    QBCore.Functions.TriggerCallback("qb-inventory:server:GetCurrentDrops", function(theDrops)
+    QBCore.Functions.TriggerCallback("inventory:server:GetCurrentDrops", function(theDrops)
 		Drops = theDrops
     end)
 end)
@@ -519,28 +530,28 @@ AddEventHandler('onResourceStop', function(name)
     if Config.UseItemDrop then RemoveAllNearbyDrops() end
 end)
 
-RegisterNetEvent('qb-inventory:client:CheckOpenState', function(type, id, label)
+RegisterNetEvent('inventory:client:CheckOpenState', function(type, id, label)
     local name = QBCore.Shared.SplitStr(label, "-")[2]
     if type == "stash" then
         if name ~= CurrentStash or CurrentStash == nil then
-            TriggerServerEvent('qb-inventory:server:SetIsOpenState', false, type, id)
+            TriggerServerEvent('inventory:server:SetIsOpenState', false, type, id)
         end
     elseif type == "trunk" then
         if name ~= CurrentVehicle or CurrentVehicle == nil then
-            TriggerServerEvent('qb-inventory:server:SetIsOpenState', false, type, id)
+            TriggerServerEvent('inventory:server:SetIsOpenState', false, type, id)
         end
     elseif type == "glovebox" then
         if name ~= CurrentGlovebox or CurrentGlovebox == nil then
-            TriggerServerEvent('qb-inventory:server:SetIsOpenState', false, type, id)
+            TriggerServerEvent('inventory:server:SetIsOpenState', false, type, id)
         end
     elseif type == "drop" then
         if name ~= CurrentDrop or CurrentDrop == nil then
-            TriggerServerEvent('qb-inventory:server:SetIsOpenState', false, type, id)
+            TriggerServerEvent('inventory:server:SetIsOpenState', false, type, id)
         end
     end
 end)
 
-RegisterNetEvent('qb-inventory:client:ItemBox', function(itemData, type, amount)
+RegisterNetEvent('inventory:client:ItemBox', function(itemData, type, amount)
     amount = amount or 1
     SendNUIMessage({
         action = "itemBox",
@@ -550,7 +561,7 @@ RegisterNetEvent('qb-inventory:client:ItemBox', function(itemData, type, amount)
     })
 end)
 
-RegisterNetEvent('qb-inventory:client:requiredItems', function(items, bool)
+RegisterNetEvent('inventory:client:requiredItems', function(items, bool)
     local itemTable = {}
     if bool then
         for k in pairs(items) do
@@ -569,14 +580,14 @@ RegisterNetEvent('qb-inventory:client:requiredItems', function(items, bool)
     })
 end)
 
-RegisterNetEvent('qb-inventory:server:RobPlayer', function(TargetId)
+RegisterNetEvent('inventory:server:RobPlayer', function(TargetId)
     SendNUIMessage({
         action = "RobMoney",
         TargetId = TargetId,
     })
 end)
 
-RegisterNetEvent('qb-inventory:client:OpenInventory', function(PlayerAmmo, inventory, other)
+RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventory, other)
     TriggerEvent('qb-inventory:UpdatePlayerDamage')
     if not IsEntityDead(PlayerPedId()) then
         local rooms = nil
@@ -609,7 +620,7 @@ RegisterNetEvent('qb-inventory:client:OpenInventory', function(PlayerAmmo, inven
                 if other then
                     currentOtherInventory = other.name
                 end
-                QBCore.Functions.TriggerCallback('qb-inventory:server:ConvertQuality', function(data)
+                QBCore.Functions.TriggerCallback('inventory:server:ConvertQuality', function(data)
                     inventory = data.inventory
                     other = data.other
                     SendNUIMessage({
@@ -649,7 +660,7 @@ RegisterNetEvent('qb-inventory:client:OpenInventory', function(PlayerAmmo, inven
             if other then
                 currentOtherInventory = other.name
             end
-            QBCore.Functions.TriggerCallback('qb-inventory:server:ConvertQuality', function(data)
+            QBCore.Functions.TriggerCallback('inventory:server:ConvertQuality', function(data)
                 inventory = data.inventory
                 other = data.other
                 SendNUIMessage({
@@ -685,7 +696,7 @@ RegisterNetEvent('qb-inventory:client:OpenInventory', function(PlayerAmmo, inven
 end)
 		
 
-RegisterNetEvent('qb-inventory:client:UpdateOtherInventory', function(items, isError)
+RegisterNetEvent('inventory:client:UpdateOtherInventory', function(items, isError)
     SendNUIMessage({
         action = "update",
         inventory = items,
@@ -695,7 +706,7 @@ RegisterNetEvent('qb-inventory:client:UpdateOtherInventory', function(items, isE
     })
 end)
 
-RegisterNetEvent('qb-inventory:client:UpdatePlayerInventory', function(isError)
+RegisterNetEvent('inventory:client:UpdatePlayerInventory', function(isError)
     SendNUIMessage({
         action = "update",
         inventory = PlayerData.items,
@@ -705,7 +716,7 @@ RegisterNetEvent('qb-inventory:client:UpdatePlayerInventory', function(isError)
     })
 end)
 
-RegisterNetEvent('qb-inventory:client:PickupSnowballs', function()
+RegisterNetEvent('inventory:client:PickupSnowballs', function()
     local ped = PlayerPedId()
     LoadAnimDict('anim@mp_snowball')
     TaskPlayAnim(ped, 'anim@mp_snowball', 'pickup_snowball', 3.0, 3.0, -1, 0, 1, 0, 0, 0)
@@ -716,22 +727,22 @@ RegisterNetEvent('qb-inventory:client:PickupSnowballs', function()
         disableCombat = true,
     }, {}, {}, {}, function() -- Done
         ClearPedTasks(ped)
-        TriggerServerEvent('qb-inventory:server:snowball', 'add')
-        TriggerEvent('qb-inventory:client:ItemBox', QBCore.Shared.Items["snowball"], "add")
+        TriggerServerEvent('inventory:server:snowball', 'add')
+        TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["snowball"], "add")
     end, function() -- Cancel
         ClearPedTasks(ped)
         QBInventoryNotify(Config.Lang["SnowballsCancelled"], "error")
     end)
 end)
 
-RegisterNetEvent('qb-inventory:client:UseSnowball', function(amount)
+RegisterNetEvent('inventory:client:UseSnowball', function(amount)
     local ped = PlayerPedId()
     GiveWeaponToPed(ped, `weapon_snowball`, amount, false, false)
     SetPedAmmo(ped, `weapon_snowball`, amount)
     SetCurrentPedWeapon(ped, `weapon_snowball`, true)
 end)
 
-RegisterNetEvent('qb-inventory:client:UseWeapon', function(weaponData, shootbool)
+RegisterNetEvent('inventory:client:UseWeapon', function(weaponData, shootbool)
     local ped = PlayerPedId()
     local weaponName = tostring(weaponData.name)
     local weaponHash = joaat(weaponData.name)
@@ -754,7 +765,7 @@ RegisterNetEvent('qb-inventory:client:UseWeapon', function(weaponData, shootbool
         GiveWeaponToPed(ped, weaponHash, 10, false, false)
         SetPedAmmo(ped, weaponHash, 10)
         SetCurrentPedWeapon(ped, weaponHash, true)
-        TriggerServerEvent('qb-inventory:server:snowball', 'remove')
+        TriggerServerEvent('inventory:server:snowball', 'remove')
         TriggerEvent('weapons:client:SetCurrentWeapon', weaponData, shootbool)
         currentWeapon = weaponName
     else
@@ -780,7 +791,7 @@ RegisterNetEvent('qb-inventory:client:UseWeapon', function(weaponData, shootbool
     end
 end)
 
-RegisterNetEvent('qb-inventory:client:CheckWeapon', function(weaponName)
+RegisterNetEvent('inventory:client:CheckWeapon', function(weaponName)
     if currentWeapon ~= weaponName:lower() then return end
     local ped = PlayerPedId()
     TriggerEvent('weapons:ResetHolster')
@@ -789,7 +800,7 @@ RegisterNetEvent('qb-inventory:client:CheckWeapon', function(weaponName)
     currentWeapon = nil
 end)
 
-RegisterNetEvent('qb-inventory:client:AddDropItem', function(dropId, player, coords)
+RegisterNetEvent('inventory:client:AddDropItem', function(dropId, player, coords)
     local forward = GetEntityForwardVector(GetPlayerPed(GetPlayerFromServerId(player)))
     local x, y, z = table.unpack(coords + forward * 0.5)
     Drops[dropId] = {
@@ -802,7 +813,7 @@ RegisterNetEvent('qb-inventory:client:AddDropItem', function(dropId, player, coo
     }
 end)
 
-RegisterNetEvent('qb-inventory:client:RemoveDropItem', function(dropId)
+RegisterNetEvent('inventory:client:RemoveDropItem', function(dropId)
     Drops[dropId] = nil
     if Config.UseItemDrop then
         RemoveNearbyDrop(dropId)
@@ -811,7 +822,7 @@ RegisterNetEvent('qb-inventory:client:RemoveDropItem', function(dropId)
     end
 end)
 
-RegisterNetEvent('qb-inventory:client:DropItemAnim', function()
+RegisterNetEvent('inventory:client:DropItemAnim', function()
     local ped = PlayerPedId()
     SendNUIMessage({
         action = "close",
@@ -825,16 +836,16 @@ RegisterNetEvent('qb-inventory:client:DropItemAnim', function()
     ClearPedTasks(ped)
 end)
 
-RegisterNetEvent('qb-inventory:client:SetCurrentStash', function(stash)
+RegisterNetEvent('inventory:client:SetCurrentStash', function(stash)
     CurrentStash = stash
 end)
 
 
-RegisterNetEvent('qb-inventory:client:craftTarget',function()
+RegisterNetEvent('inventory:client:craftTarget',function()
     local crafting = {}
     crafting.label = "Crafting"
     crafting.items = GetThresholdItems()
-    TriggerServerEvent("qb-inventory:server:OpenInventory", "crafting", math.random(1, 99), crafting)
+    TriggerServerEvent("inventory:server:OpenInventory", "crafting", math.random(1, 99), crafting)
 end)
 
 -- Commands
@@ -847,7 +858,7 @@ RegisterNetEvent("qb-inventory:client:closeinv", function()
     closeInventory()
 end)
 
-RegisterCommand('qb-inventory', function()
+RegisterCommand('inventory', function()
     if IsNuiFocused() then return end
     if not isCrafting and not inInventory then
         if not PlayerData.metadata["isdead"] and not PlayerData.metadata["inlaststand"] and not PlayerData.metadata["ishandcuffed"] and not IsPauseMenuActive() then
@@ -908,27 +919,27 @@ RegisterCommand('qb-inventory', function()
                     maxweight = maxweight,
                     slots = slots,
                 }
-                TriggerServerEvent("qb-inventory:server:OpenInventory", "trunk", CurrentVehicle, other)
+                TriggerServerEvent("inventory:server:OpenInventory", "trunk", CurrentVehicle, other)
                 OpenTrunk()
             elseif CurrentGlovebox then
-                TriggerServerEvent("qb-inventory:server:OpenInventory", "glovebox", CurrentGlovebox)
+                TriggerServerEvent("inventory:server:OpenInventory", "glovebox", CurrentGlovebox)
             elseif CurrentDrop ~= 0 then
-                TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
             elseif VendingMachine then
                 local ShopItems = {}
                 ShopItems.label = "Vending Machine"
                 ShopItems.items = Config.VendingItem
                 ShopItems.slots = #Config.VendingItem
-                TriggerServerEvent("qb-inventory:server:OpenInventory", "shop", "Vendingshop_"..math.random(1, 99), ShopItems)
+                TriggerServerEvent("inventory:server:OpenInventory", "shop", "Vendingshop_"..math.random(1, 99), ShopItems)
             else
                 openAnim()
-                TriggerServerEvent("qb-inventory:server:OpenInventory")
+                TriggerServerEvent("inventory:server:OpenInventory")
             end
         end
     end
 end, false)
 
-RegisterKeyMapping('qb-inventory', 'Open Inventory', 'keyboard', Config.KeyBinds.Inventory)
+RegisterKeyMapping('inventory', 'Open Inventory', 'keyboard', Config.KeyBinds.Inventory)
 
 RegisterCommand('hotbar', function()
     isHotbar = not isHotbar
@@ -945,7 +956,7 @@ for i = 1, 6 do
             if i == 6 then
                 i = Config.MaxInventorySlots
             end
-            TriggerServerEvent("qb-inventory:server:UseItemSlot", i)
+            TriggerServerEvent("inventory:server:UseItemSlot", i)
         end
     end, false)
     RegisterKeyMapping('slot' .. i, 'Uses the item in slot ' .. i, 'keyboard', i)
@@ -1018,16 +1029,16 @@ RegisterNUICallback("CloseInventory", function()
     end
     if CurrentVehicle ~= nil then
         CloseTrunk()
-        TriggerServerEvent("qb-inventory:server:SaveInventory", "trunk", CurrentVehicle)
+        TriggerServerEvent("inventory:server:SaveInventory", "trunk", CurrentVehicle)
         CurrentVehicle = nil
     elseif CurrentGlovebox ~= nil then
-        TriggerServerEvent("qb-inventory:server:SaveInventory", "glovebox", CurrentGlovebox)
+        TriggerServerEvent("inventory:server:SaveInventory", "glovebox", CurrentGlovebox)
         CurrentGlovebox = nil
     elseif CurrentStash ~= nil then
-        TriggerServerEvent("qb-inventory:server:SaveInventory", "stash", CurrentStash)
+        TriggerServerEvent("inventory:server:SaveInventory", "stash", CurrentStash)
         CurrentStash = nil
     else
-        TriggerServerEvent("qb-inventory:server:SaveInventory", "drop", CurrentDrop)
+        TriggerServerEvent("inventory:server:SaveInventory", "drop", CurrentDrop)
         CurrentDrop = nil
     end
     Wait(50)
@@ -1037,12 +1048,12 @@ RegisterNUICallback("CloseInventory", function()
 end)
 
 RegisterNUICallback("UseItem", function(data, cb)
-    TriggerServerEvent("qb-inventory:server:UseItem", data.inventory, data.item)
+    TriggerServerEvent("inventory:server:UseItem", data.inventory, data.item)
     cb('ok')
 end)
 
 RegisterNUICallback("SetInventoryData", function(data, cb)
-    TriggerServerEvent("qb-inventory:server:SetInventoryData", data.fromInventory, data.toInventory, data.fromSlot, data.toSlot, data.fromAmount, data.toAmount)
+    TriggerServerEvent("inventory:server:SetInventoryData", data.fromInventory, data.toInventory, data.fromSlot, data.toSlot, data.fromAmount, data.toAmount)
     cb('ok')
 end)
 
@@ -1062,7 +1073,7 @@ RegisterNUICallback('GiveItem', function(data, cb)
         if data.inventory == 'player' then
             local playerId = GetPlayerServerId(player)
             SetCurrentPedWeapon(PlayerPedId(), 'WEAPON_UNARMED', true)
-            TriggerServerEvent('qb-inventory:server:GiveItem', playerId, data.item.name, data.amount, data.item.slot)
+            TriggerServerEvent('inventory:server:GiveItem', playerId, data.item.name, data.amount, data.item.slot)
         else
             QBInventoryNotify(Config.Lang["YouDoNotOwnThisItem"], "error")
         end
@@ -1133,26 +1144,26 @@ end)
 
 
     --qb-target
-    RegisterNetEvent("qb-inventory:client:Crafting", function(dropId)
+    RegisterNetEvent("inventory:client:Crafting", function(dropId)
         local crafting = {}
         crafting.label = "Crafting"
         crafting.items = GetThresholdItems()
-        TriggerServerEvent("qb-inventory:server:OpenInventory", "crafting", math.random(1, 99), crafting)
+        TriggerServerEvent("inventory:server:OpenInventory", "crafting", math.random(1, 99), crafting)
     end)
     
     
-    RegisterNetEvent("qb-inventory:client:WeaponAttachmentCrafting", function(dropId)
+    RegisterNetEvent("inventory:client:WeaponAttachmentCrafting", function(dropId)
         local crafting = {}
         crafting.label = "Attachment Crafting"
         crafting.items = GetAttachmentThresholdItems()
-        TriggerServerEvent("qb-inventory:server:OpenInventory", "attachment_crafting", math.random(1, 99), crafting)
+        TriggerServerEvent("inventory:server:OpenInventory", "attachment_crafting", math.random(1, 99), crafting)
     end)
 
     if Config.BinEnable == true then 
         local searched = {3423423}
         local canSearch = true
         
-        RegisterNetEvent('qb-inventory:client:searchtrash', function()
+        RegisterNetEvent('inventory:client:searchtrash', function()
             if canSearch then
                 local ped = GetPlayerPed(-1)
                 local pos = GetEntityCoords(ped)
@@ -1173,8 +1184,8 @@ end)
                             elseif i == #searched and not dumpsterFound then
                                 
                                 local itemType = math.random(#Config.RewardTypes)
-                                TriggerEvent('qb-inventory:client:progressbar', itemType)
-                                TriggerServerEvent('qb-inventory:server:startDumpsterTimer', dumpster)
+                                TriggerEvent('inventory:client:progressbar', itemType)
+                                TriggerServerEvent('inventory:server:startDumpsterTimer', dumpster)
                                 table.insert(searched, dumpster)
                             end
                         end
@@ -1183,7 +1194,7 @@ end)
             end
         end)
         
-        RegisterNetEvent('qb-inventory:server:removeDumpster', function(object)
+        RegisterNetEvent('inventory:server:removeDumpster', function(object)
             for i = 1, #searched do
                 if searched[i] == object then
                     table.remove(searched, i)
@@ -1191,7 +1202,7 @@ end)
             end
         end)
         
-        RegisterNetEvent('qb-inventory:client:progressbar', function(itemType)
+        RegisterNetEvent('inventory:client:progressbar', function(itemType)
             local item = math.random(#Config.RewardsSmall)
             QBCore.Functions.Progressbar("trash_find", "Searching trConfig..", Config.SearchBinProgress, false, true, {
                 disableMovement = false,
@@ -1206,11 +1217,11 @@ end)
                 StopAnimTask(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "idle_d", 1.0)
                 if Config.RewardTypes[itemType].type == "item" then
                     QBInventoryNotify(Config.Lang["FoundSomething"], "success")
-                    TriggerServerEvent('qb-inventory:server:recieveItem', Config.RewardsSmall[item].item, math.random(Config.RewardsSmall[item].minAmount, Config.RewardsSmall[item].maxAmount))
-                    TriggerEvent('qb-inventory:client:ItemBox', QBCore.Shared.Items[Config.RewardsSmall[item].item], "add")
+                    TriggerServerEvent('inventory:server:recieveItem', Config.RewardsSmall[item].item, math.random(Config.RewardsSmall[item].minAmount, Config.RewardsSmall[item].maxAmount))
+                    TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items[Config.RewardsSmall[item].item], "add")
                 elseif Config.RewardTypes[itemType].type == "money" then
                     QBInventoryNotify(Config.Lang["FoundMoneyDumpster"], "success")
-                    TriggerServerEvent('qb-inventory:server:givemoney', math.random(100, 400))
+                    TriggerServerEvent('inventory:server:givemoney', math.random(100, 400))
                 elseif Config.RewardTypes[itemType].type == "nothing" then
                     QBInventoryNotify(Config.Lang["FoundNothingDumpster"], "error")
                 end
@@ -1225,7 +1236,7 @@ end)
         exports['qb-target']:AddTargetModel(Config.Objects, {
             options = {
                 {
-                    event = "qb-inventory:client:searchtrash",
+                    event = "inventory:client:searchtrash",
                     icon = "fas fa-pencil-ruler",
                     label = "Search Trash",
                 },
@@ -1236,7 +1247,7 @@ end)
         exports[Config.CustomTarget]:AddTargetModel(Config.Objects, {
             options = {
                 {
-                    event = "qb-inventory:client:searchtrash",
+                    event = "inventory:client:searchtrash",
                     icon = "fas fa-pencil-ruler",
                     label = "Search Trash",
                 },
@@ -1246,7 +1257,7 @@ end)
     elseif Config.TargetSystem == "ox_target" then
         exports.ox_target:addModel(Config.Objects, {
             {
-                event = "qb-inventory:client:searchtrash",
+                event = "inventory:client:searchtrash",
                 icon = "fas fa-pencil-ruler",
                 label = "Search Trash",
             },
@@ -1273,7 +1284,7 @@ end)
             ignoreLos = true,
             options = {
                 {
-                    event = "qb-inventory:client:searchtrash",
+                    event = "inventory:client:searchtrash",
                     label = 'Search Trash',
                 },
             },
