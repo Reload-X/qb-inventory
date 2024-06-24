@@ -215,7 +215,7 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
                                 label = "Pick Up",
                                 icon = 'fas fa-hand',
                                 action = function()
-                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                    TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
                                 end
                             },
                         },
@@ -232,7 +232,7 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
                                 label = "Pick Up",
                                 icon = 'fas fa-hand',
                                 action = function()
-                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                    TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
                                 end
                             },
                         },
@@ -247,7 +247,7 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
                                 label = "Pick Up",
                                 icon = 'fas fa-hand',
                                 onSelect = function()
-                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                    TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
                                 end
                             }
                         }
@@ -264,7 +264,7 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
                             {
                                 label = "Pick Up",
                                 action = function()
-                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                    TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
                                 end
                             },
                         },
@@ -318,7 +318,7 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
                                 label = "Pick Up",
                                 icon = 'fas fa-hand',
                                 action = function()
-                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                    TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
                                 end
                             },
                         },
@@ -337,7 +337,7 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
                                 label = "Pick Up",
                                 icon = 'fas fa-hand',
                                 action = function()
-                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                    TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
                                 end
                             },
                         },
@@ -352,7 +352,7 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
                             {
                                 label = "Pick Up",
                                 onSelect = function()
-                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                    TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
                                 end
                             }
                         }
@@ -369,7 +369,7 @@ RegisterNetEvent('qb-inventory:updateDropVisualData', function(dropId, coords, i
                             {
                                 label = "Pick Up",
                                 action = function()
-                                    TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                    TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
                                 end
                             },
                         },
@@ -418,7 +418,7 @@ Citizen.CreateThread(function()
                                         label = "Pick Up",
                                         icon = 'fas fa-hand',
                                         action = function()
-                                            TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                            TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
                                         end
                                     },
                                 },
@@ -437,7 +437,7 @@ Citizen.CreateThread(function()
                                         label = "Pick Up",
                                         icon = 'fas fa-hand',
                                         action = function()
-                                            TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                            TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
                                         end
                                     },
                                 },
@@ -452,7 +452,7 @@ Citizen.CreateThread(function()
                                     {
                                         label = "Pick Up",
                                         onSelect = function()
-                                            TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                            TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
                                         end
                                     }
                                 }
@@ -469,7 +469,7 @@ Citizen.CreateThread(function()
                                     {
                                         label = "Pick Up",
                                         action = function()
-                                            TriggerServerEvent("qb-inventory:server:OpenInventory", "drop", CurrentDrop)
+                                            TriggerServerEvent("inventory:server:OpenInventory", "drop", CurrentDrop)
                                         end
                                     },
                                 },
