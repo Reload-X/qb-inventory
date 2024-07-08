@@ -362,6 +362,17 @@ $(document).on("click", ".weapon-attachments-back", function(e) {
 //     changeInventoryColor(finalColor);
 // });
 
+var itemAmountInput = document.getElementById('item-amount');
+disableDecimalInput(itemAmountInput);
+
+function disableDecimalInput(input) {
+    input.addEventListener('keydown', function(event) {
+      if (event.key === '.' || event.key === 'Decimal') {
+        event.preventDefault();
+      }
+    });
+  }
+
 function FormatAttachmentInfo(data) {
     $.post(
         "https://qb-inventory/GetWeaponData",
