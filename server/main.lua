@@ -2638,5 +2638,4 @@ if Config.BinEnable == true then
 			end
 		end
 	end
-elseif Config.BinEnable == false then
 end
