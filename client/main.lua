@@ -1204,7 +1204,7 @@ end)
         
         RegisterNetEvent('inventory:client:progressbar', function(itemType)
             local item = math.random(#Config.RewardsSmall)
-            QBCore.Functions.Progressbar("trash_find", "Searching trConfig..", Config.SearchBinProgress, false, true, {
+            QBCore.Functions.Progressbar("trash_find", "Searching Bin..", Config.SearchBinProgress, false, true, {
                 disableMovement = false,
                 disableCarMovement = false,
                 disableMouse = false,
