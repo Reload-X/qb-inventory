@@ -22,14 +22,15 @@ Config.CleanupDropTime = 15 * 60 -- How many seconds it takes for drops to be un
 Config.MaxDropViewDistance = 12.5 -- The distance in GTA Units that a drop can be seen
 Config.ItemDropObject = `prop_paper_bag_small`
 Config.Waittime = 0 -- Time to open inventory 2000 = 2 seconds
-Config.Print = true 
+Config.Print = false 
+Cofnig.Decay = false --Recommended to leave false until i find a fix but try to put to true if you have no erros happy days ::)))
 Config.OrApartment = false
 
 --Floor Drops/Vending
 Config.UseItemDrop = true -- This will enable item object to spawn on drops instead of markers // if its false it will be a marker
 
 Config.CustomTarget = 'qb-target' -- only works if Config.TargetSystem = customtarget
-Config.TargetSystem = 'interact' -- choose between qb_target/interact/ox_target/customtarget
+Config.TargetSystem = 'qb_target' -- choose between qb_target/interact/ox_target/customtarget
 
 Config.Progressbar = {
     Enable = false,         -- True to Enable the progressbar while opening inventory
