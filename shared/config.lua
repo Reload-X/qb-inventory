@@ -23,7 +23,7 @@ Config.MaxDropViewDistance = 12.5 -- The distance in GTA Units that a drop can b
 Config.ItemDropObject = `prop_paper_bag_small`
 Config.Waittime = 0 -- Time to open inventory 2000 = 2 seconds
 Config.Print = false 
-Cofnig.Decay = false --Recommended to leave false until i find a fix but try to put to true if you have no erros happy days ::)))
+Config.Decay = false --Recommended to leave false until i find a fix but try to put to true if you have no erros happy days ::)))
 Config.OrApartment = false
 
 --Floor Drops/Vending
