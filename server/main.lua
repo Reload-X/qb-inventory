@@ -2431,8 +2431,6 @@ CreateThread(function()
 		Wait(60 * 1000)
 	end
 end)
-
-if Config.Decay == true then
 -- Decay System
 
 	local TimeAllowed = 60 * 60 * 24 * 1 -- Maths for 1 day dont touch its very important and could break everything
@@ -2443,7 +2441,7 @@ if Config.Decay == true then
 	        DecayRate = 0
 	    end
 	    local TimeExtra = math.ceil((TimeAllowed * DecayRate))
-	    local percentDone = 100 - math.ceil((((os.time() - StartDate) / TimeExtra) * 100))
+	    -- local percentDone = 100 - math.ceil((((os.time() - StartDate) / TimeExtra) * 100))
 	    if DecayRate == 0 then
 	        percentDone = 100
 	    end
@@ -2599,7 +2597,6 @@ QBCore.Functions.CreateCallback('inventory:server:ConvertQuality', function(sour
     data.other = other
     cb(data)
 end)
-end
 
 -- Warning Messages
 
