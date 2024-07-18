@@ -2452,7 +2452,6 @@ if Config.Decay == true then
 	    end
 	    return percentDone
 	end
-end
 
 QBCore.Functions.CreateCallback('inventory:server:ConvertQuality', function(source, cb, inventory, other)
     local src = source
@@ -2600,6 +2599,7 @@ QBCore.Functions.CreateCallback('inventory:server:ConvertQuality', function(sour
     data.other = other
     cb(data)
 end)
+end
 
 -- Warning Messages
 
