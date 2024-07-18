@@ -2432,7 +2432,7 @@ CreateThread(function()
 	end
 end)
 
-if Config.Decay = true then
+if Config.Decay == true then
 -- Decay System
 
 	local TimeAllowed = 60 * 60 * 24 * 1 -- Maths for 1 day dont touch its very important and could break everything
