@@ -2432,24 +2432,26 @@ CreateThread(function()
 	end
 end)
 
+if Config.Decay = true then
 -- Decay System
 
-local TimeAllowed = 60 * 60 * 24 * 1 -- Maths for 1 day dont touch its very important and could break everything
-function ConvertQuality(item)
-	local StartDate = item.created
-    local DecayRate = QBCore.Shared.Items[item.name:lower()]["decay"] ~= nil and QBCore.Shared.Items[item.name:lower()]["decay"] or 0.0
-    if DecayRate == nil then
-        DecayRate = 0
-    end
-    local TimeExtra = math.ceil((TimeAllowed * DecayRate))
-    local percentDone = 100 - math.ceil((((os.time() - StartDate) / TimeExtra) * 100))
-    if DecayRate == 0 then
-        percentDone = 100
-    end
-    if percentDone < 0 then
-        percentDone = 0
-    end
-    return percentDone
+	local TimeAllowed = 60 * 60 * 24 * 1 -- Maths for 1 day dont touch its very important and could break everything
+	function ConvertQuality(item)
+		local StartDate = item.created
+	    local DecayRate = QBCore.Shared.Items[item.name:lower()]["decay"] ~= nil and QBCore.Shared.Items[item.name:lower()]["decay"] or 0.0
+	    if DecayRate == nil then
+	        DecayRate = 0
+	    end
+	    local TimeExtra = math.ceil((TimeAllowed * DecayRate))
+	    local percentDone = 100 - math.ceil((((os.time() - StartDate) / TimeExtra) * 100))
+	    if DecayRate == 0 then
+	        percentDone = 100
+	    end
+	    if percentDone < 0 then
+	        percentDone = 0
+	    end
+	    return percentDone
+	end
 end
 
 QBCore.Functions.CreateCallback('inventory:server:ConvertQuality', function(source, cb, inventory, other)
