@@ -2613,7 +2613,7 @@ if Config.BinEnable == true then
 		startTimer(source, dumpster)
 	end)
 	
-	RegisterNetEvent('qb-inventory:server:recieveItem', function(item, itemAmount)
+	RegisterNetEvent('inventory:server:recieveItem', function(item, itemAmount)
 		local src = source
 		local ply = QBCore.Functions.GetPlayer(src)
 		ply.Functions.AddItem(item, itemAmount)
