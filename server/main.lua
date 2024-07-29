@@ -2441,8 +2441,12 @@ end)
 	    if DecayRate == nil then
 	        DecayRate = 0
 	    end
+	    if not (type(StartDate) == "number") then
+	        if not (tonumber(StartDate)) then return 0 end
+	        StartDate = tonumber(StartDate)
+	    end
 	    local TimeExtra = math.ceil((TimeAllowed * DecayRate))
-	    -- local percentDone = 100 - math.ceil((((os.time() - StartDate) / TimeExtra) * 100))
+	    local percentDone = 100 - math.ceil((((os.time() - StartDate) / TimeExtra) * 100))
 	    if DecayRate == 0 then
 	        percentDone = 100
 	    end
